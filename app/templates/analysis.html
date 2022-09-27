@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+Analysis Page
+{% endblock %}
+
+{% block main %}
+<div class="row m-0 mt-4">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="row">
+            <div class="col-lg-2 mb-3 p-0 me-lg-2 d-flex align-items-stretch">
+                <button class="analysis-button col-12 border shadow-sm">
+                    <span class="bi bi-text-right"></span>
+                    <span class="analysis-buttons-text ms-2">Scrivi testo</span>
+                </button>
+            </div>
+            <div class="col-lg-2 mb-3 p-0 d-flex align-items-stretch">
+                <button class="analysis-button col-12 border shadow-sm">
+                    <span class="bi bi-file-earmark-text"></span>
+                    <span class="analysis-buttons-text ms-2">Carica file</span>
+                </button>
+            </div>
+            <div class="col-lg-3 mb-3 ms-auto p-0 me-lg-2 d-flex align-items-stretch">
+                <div class="analysis-option col-12 border shadow-sm">
+                    <span class="bi bi-globe ms-2"></span>
+                    <span class="ms-4">
+                        <span class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="analysis_language" id="analysis_language_it" checked>
+                            <label class="form-check-label" for="analysis_language_it">Italiano</label>
+                        </span>
+                        <span class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="analysis_language" id="analysis_language_en">
+                            <label class="form-check-label" for="analysis_language_en">Inglese</label>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-2 mb-3 p-0 d-flex align-items-stretch">
+                <div class="analysis-option col-12 border shadow-sm py-2 py-lg-0">
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input me-2" type="checkbox" role="switch" id="switch_feel">
+                        <label class="form-check-label" for="switch_feel">Trova emozione</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-floating p-0">
+                <textarea class="form-control border shadow-sm" placeholder="Scrivere qui il testo da analizzare" id="text_area"></textarea>
+                <label for="text_area">Scrivere qui il testo da analizzare</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="file-area col-lg-8 border shadow-sm p-4">
+                <div class="row mt-5 justify-content-center">
+                    <img class="mt-5" src="{{ url_for('static', filename='images/pdf_icon.png') }}" alt="icona file pdf" />
+                    <img class="mt-5 p-0" src="{{ url_for('static', filename='images/docx_icon.png') }}" alt="icona file docx" />
+                    <img class="mt-5" src="{{ url_for('static', filename='images/txt_icon.png') }}" alt="icona file txt" />
+                    <img class="mt-5 p-0" src="{{ url_for('static', filename='images/rtf_icon.png') }}" alt="icona file rtf" />
+                    <img class="mt-5" src="{{ url_for('static', filename='images/odt_icon.png') }}" alt="icona file odt" />
+                </div>
+                <div class="row mt-5 text-center">
+                    <label class="analysis-buttons-text" for="upload_doc">Carica un file PDF, DOCX, TXT, RTF o ODT utilizzando il bottone qui sotto</label>
+                </div>
+                <div class="row mt-5 justify-content-center">
+                    <button class="col-5 control-button border shadow-sm">Seleziona dal computer</button>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+        <div class="row justify-content-around">
+            <button class="col-lg-4 mt-3 control-button border shadow-sm">Cancella e Ricomincia</button>
+            <button class="col-lg-4 mt-3 control-button border shadow-sm">Effettua Analisi del Sentiment</button>
+        </div>
+    </div>
+    <div class="col-1"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}
+Analysis Details Page
+{% endblock %}
+
+{% block main %}
+<div class="row justify-content-center m-0">
+    <div class="col-10 p-0">
+        <div class="row gx-2 mt-3">
+            <div class="col-lg-2 ps-lg-0 mb-3">
+                <a class="text-decoration-none analysis-button col-12 border shadow-sm p-0" href="{{ url_for('archive_page') }}">
+                    <span class="bi bi-arrow-left-short"></span>
+                    <span class="analysis-buttons-text ms-1">Torna indietro</span>
+                </a>
+            </div>
+            <div class="col-lg-2 offset-lg-6 mb-3">
+                <button class="analysis-button col-12 border shadow-sm p-0">
+                    <span class="bi bi-gear"></span>
+                    <span class="analysis-buttons-text ms-2">Modifica</span>
+                </button>
+            </div>
+            <div class="col-lg-2 pe-lg-0 mb-3">
+                <button class="analysis-button col-12 border shadow-sm p-0">
+                    <span class="bi bi-trash"></span>
+                    <span class="analysis-buttons-text ms-2">Elimina</span>
+                </button>
+            </div>
+        </div>
+        <div class="row justify-content-between gx-2 mx-1">
+            <div class="col-lg-5 order-lg-last mb-3 mt-1">
+                <!--informazioni scritte-->
+                <div class="row">
+                    <div class="col-12 px-0">
+                        <div class="row mb-2">
+                            <h2 class="text-lg-start text-center">Informazioni su questa analisi</h2>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Sentiment Analysis
+                                    </div>
+                                    <div class="col text-end align-self-center fw-bold text-uppercase">
+                                        negativo
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Metodo di calcolo
+                                    </div>
+                                    <div class="col text-end align-self-center text-muted">
+                                        Intero testo
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Modificato da
+                                    </div>
+                                    <div class="col text-end align-self-center text-muted">
+                                        Nicola Costa
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Data modifica
+                                    </div>
+                                    <div class="col text-end align-self-center text-muted">
+                                        2022-09-29
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Lingua dell'analisi
+                                    </div>
+                                    <div class="col text-end align-self-center text-muted">
+                                        Italiano
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group mt-2 list-group-flush">
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Data caricamento
+                                    </div>
+                                    <div class="col text-end align-self-center text-muted">
+                                        2022-09-20
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Origine
+                                    </div>
+                                    <div class="col text-end align-self-center text-muted">
+                                        Caricato a mano
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Responsabile caricamento
+                                    </div>
+                                    <div class="col text-end align-self-center text-muted">
+                                        Nicola Costa
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--elenco parole-->
+                <div class="row mt-3 mt-lg-4">
+                    <div class="col-12 px-0">
+                        <div class="row mb-2">
+                            <h2 class="text-lg-start text-center">Parole chiave trovate</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 px-2">
+                                <ul class="d-flex flex-wrap p-0">
+                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
+                                        ciao
+                                    </li>
+                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
+                                        come stai
+                                    </li>
+                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
+                                        polizia
+                                    </li>
+                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
+                                        aiuto
+                                    </li>
+                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
+                                        questi qua mi vogliono picchiare
+                                    </li>
+                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
+                                        ciao2
+                                    </li>
+                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
+                                        ciao33
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-first mt-1">
+                <div class="row mb-2">
+                    <div class="col p-0">
+                        <h2>Testo del documento</h2>
+                    </div>
+                    <div class="col-1 p-0 text-end">
+                        <button class="copy-document border-0 p-0 bg-transparent">
+                            <span class="bi bi-clipboard"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul class="list-group p-0">
+                        <li class="list-group-item border-0">
+                            <p class="document-p m-0">asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie ceweewcewc</p>
+                        </li>
+                        <li class="list-group-item border-0">
+                            <p class="document-p m-0">asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie ceweewcewc</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

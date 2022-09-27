@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+Activities Log
+{% endblock %}
+
+{% block main %}
+<div class="row justify-content-center table-hover m-0 mt-3">
+    <div class="col-10">
+        <table class="table table-sm table-hover align-middle">
+            <thead>
+                <tr>
+                    <th id="timestamp">Timestamp</th>
+                    <th id="user">Utente</th>
+                    <th id="activity">Attivit&agrave;</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white text-dark">
+                <tr>
+                    <td headers="timestamp">2022-08-09 18:48:22</td>
+                    <td headers="user">Nicola Costa</td>
+                    <td headers="activity">Eliminazione documento POSITIVO precedentemente salvato in data 2022-07-30 da Nicola Costa</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

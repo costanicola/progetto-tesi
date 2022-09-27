@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home Page
+{% endblock %}
+
+{% block main %}
+<div class="row row-cols-2 row-cols-lg-5 justify-content-evenly align-items-center mt-5 mx-0">
+    <div class="home-box col border rounded mb-4 shadow-sm position-relative">
+        <a class="text-decoration-none stretched-link fw-bold" href="{{ url_for('dashboard_darsena_page') }}">
+            <div class="mt-5">Dashboard Darsena</div>
+            <div class="mt-2 bi bi-pie-chart-fill"></div>
+        </a>
+    </div>
+    <div class="home-box col border rounded mb-4 shadow-sm position-relative">
+        <a class="text-decoration-none stretched-link fw-bold" href="{{ url_for('dashboard_social_page') }}">
+            <div class="mt-5">Dashboard Social</div>
+            <div class="mt-2 bi bi-bar-chart-line-fill"></div>
+        </a>
+    </div>
+    <div class="home-box col border rounded mb-4 shadow-sm position-relative">
+        <a class="text-decoration-none stretched-link fw-bold" href="#">
+            <div class="mt-5">Parole chiave</div>
+            <div class="mt-2 bi bi-key-fill"></div>
+        </a>
+    </div>
+    <div class="home-box col border rounded mb-4 shadow-sm position-relative">
+        <a class="text-decoration-none stretched-link fw-bold" href="{{ url_for('archive_page') }}">
+            <div class="mt-5">Archivio documenti</div>
+            <div class="mt-2 bi bi-archive-fill"></div>
+        </a>
+    </div>
+    <div class="home-box col border rounded mb-4 shadow-sm position-relative">
+        <a class="text-decoration-none stretched-link fw-bold" href="{{ url_for('analysis_page') }}">
+            <div class="mt-5">Analizza un testo</div>
+            <div class="mt-2 bi bi-pencil-fill"></div>
+        </a>
+    </div>
+</div>
+{% endblock %}
