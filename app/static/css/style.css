@@ -1,5 +1,5 @@
 body {
-    background: whitesmoke;
+    background: linear-gradient(to right, #e6f7ff, #ccccff, #f2e6ff);
 }
 
 header {
@@ -19,7 +19,7 @@ nav .bi {
     font-size: 17px;
 }
 
-.home-box:hover, .analysis-button:hover, .documents-list>li:hover {
+.home-box:hover, .documents-list>li:hover {
     background: #fafcff;
 }
 
@@ -131,4 +131,30 @@ h3 {
 
 .table {
     font-size: 14px;
+}
+
+.text-modified {
+    font-size: 13px;
+    font-style: italic;
+}
+
+.tooltip-inner {
+    background-color: #2f4fff;
+    opacity: 1 !important;
+    font-size: 16px;
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: #2f4fff !important;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #2f4fff !important;
+}
+
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: #2f4fff !important;
+}
+.tooltip.bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: #2f4fff !important;
 }

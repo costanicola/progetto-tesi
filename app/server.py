@@ -10,6 +10,7 @@ from flask import Flask, render_template
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+
 @app.route("/home")
 def home_page():
     return render_template("home.html")
@@ -25,6 +26,10 @@ def dashboard_darsena_page():
 @app.route("/dashboard-social")
 def dashboard_social_page():
     return render_template("dashboard_social.html")
+
+@app.route("/dashboard-keywords")
+def dashboard_keywords_page():
+    return render_template("dashboard_keywords.html")
 
 @app.route("/archive")
 def archive_page():

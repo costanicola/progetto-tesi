@@ -10,18 +10,18 @@ Analysis Page
     <div class="col-10">
         <div class="row">
             <div class="col-lg-2 mb-3 p-0 me-lg-2 d-flex align-items-stretch">
-                <button class="analysis-button col-12 border shadow-sm">
+                <button class="analysis-button col-12 border shadow-sm" id="text_button">
                     <span class="bi bi-text-right"></span>
                     <span class="analysis-buttons-text ms-2">Scrivi testo</span>
                 </button>
             </div>
             <div class="col-lg-2 mb-3 p-0 d-flex align-items-stretch">
-                <button class="analysis-button col-12 border shadow-sm">
+                <button class="analysis-button col-12 border shadow-sm" id="file_button">
                     <span class="bi bi-file-earmark-text"></span>
                     <span class="analysis-buttons-text ms-2">Carica file</span>
                 </button>
             </div>
-            <div class="col-lg-3 mb-3 ms-auto p-0 me-lg-2 d-flex align-items-stretch">
+            <div class="col-lg-3 mb-3 ms-auto p-0 me-lg-2 d-flex align-items-stretch" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Lingua con cui verr&agrave; analizzato il testo">
                 <div class="analysis-option col-12 border shadow-sm">
                     <span class="bi bi-globe ms-2"></span>
                     <span class="ms-4">
@@ -36,7 +36,7 @@ Analysis Page
                     </span>
                 </div>
             </div>
-            <div class="col-lg-2 mb-3 p-0 d-flex align-items-stretch">
+            <div class="col-lg-2 mb-3 p-0 d-flex align-items-stretch"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Consente di rilevare emozioni come paura, rabbia, tristezza e gioia">
                 <div class="analysis-option col-12 border shadow-sm py-2 py-lg-0">
                     <div class="form-check form-switch m-0">
                         <input class="form-check-input me-2" type="checkbox" role="switch" id="switch_feel">
@@ -46,9 +46,9 @@ Analysis Page
             </div>
         </div>
         <div class="row">
-            <div class="form-floating p-0">
-                <textarea class="form-control border shadow-sm" placeholder="Scrivere qui il testo da analizzare" id="text_area"></textarea>
-                <label for="text_area">Scrivere qui il testo da analizzare</label>
+            <div class="form-floating p-0" id="text_area">
+                <textarea class="form-control border shadow-sm" placeholder="Scrivere qui il testo da analizzare" id="textarea"></textarea>
+                <label for="textarea">Scrivere qui il testo da analizzare</label>
             </div>
         </div>
         <div class="row">

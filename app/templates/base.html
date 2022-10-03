@@ -13,6 +13,10 @@
     <!--D3-GRAPH-->
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+    <!--JQuery & JavaScript-->
+    <script src="{{ url_for('static', filename='js/jquery-3.6.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/javascript.js') }}"></script>
 </head>
 <body>
     <header class="sticky-top">
@@ -24,15 +28,15 @@
                 <span class="bi bi-list"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbar_toggler">
-                <a class="nav-link border rounded bg-light mx-2 ms-lg-0 me-lg-3 mt-2 mt-lg-0 text-center" href="{{ url_for('home_page') }}">
+                <a class="nav-link border rounded bg-light mx-2 ms-lg-0 me-lg-3 mt-2 mt-lg-0 text-center" href="{{ url_for('home_page') }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Home">
                     <span class="bi bi-house-door"></span>
                     <span class="analysis-buttons-text p-1 d-lg-none"> HOME</span>
                 </a>
-                <a class="nav-link border rounded bg-light mx-2 ms-lg-0 me-lg-3 mt-1 mt-lg-0 text-center" href="{{ url_for('activities_log_page') }}">
+                <a class="nav-link border rounded bg-light mx-2 ms-lg-0 me-lg-3 mt-1 mt-lg-0 text-center" href="{{ url_for('activities_log_page') }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Attivit&agrave;">
                     <span class="bi bi-clock-history"></span>
                     <span class="analysis-buttons-text p-1 d-lg-none"> ATTIVIT&Agrave;</span>
                 </a>
-                <a class="nav-link border rounded bg-light mx-2 mx-lg-0 me-lg-2 mt-1 mt-lg-0 text-center" href="#">
+                <a class="nav-link border rounded bg-light mx-2 mx-lg-0 me-lg-2 mt-1 mt-lg-0 text-center" href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Logout">
                     <span class="bi bi-door-open"></span>
                     <span class="analysis-buttons-text ps-1 d-lg-none"> LOGOUT</span>
                 </a>
