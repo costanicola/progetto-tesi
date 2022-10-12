@@ -23,10 +23,6 @@ nav .bi {
     background: #fafcff;
 }
 
-.control-button:hover {
-    background: #e6f0ff;
-}
-
 .home-box>a {
     color: black;
 }
@@ -34,6 +30,11 @@ nav .bi {
 .bi {
     font-size: 40px;
     color: black;
+}
+
+.graph-area {
+    background: white;
+    border-radius: 6px;
 }
 
 .analysis-button, .analysis-option {
@@ -54,19 +55,21 @@ nav .bi {
     color: black;
 }
 
+#analyse_document_button {
+    background: #2f4fff;
+    color: white;
+    font-size: 17px;
+}
+
+#analyse_document_button:hover {
+    background: #0026ff;
+}
+
 textarea, .file-area {
     height: 480px !important;
     border-radius: 4px;
     background: white;
     resize: none;
-}
-
-.control-button {
-    background: #fafcff;
-    border-radius: 8px;
-    font-size: 17px;
-    color: black;
-    padding: 8px;
 }
 
 .file-area img {
@@ -155,6 +158,7 @@ h3 {
 .tooltip.bs-tooltip-end .tooltip-arrow::before {
     border-right-color: #2f4fff !important;
 }
+
 .tooltip.bs-tooltip-start .tooltip-arrow::before {
     border-left-color: #2f4fff !important;
 }

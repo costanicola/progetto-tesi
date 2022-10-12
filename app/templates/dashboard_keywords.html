@@ -5,12 +5,34 @@ Dashboard Keywords
 {% endblock %}
 
 {% block main %}
-<div class="row justify-content-center m-0">
-    <div class="col-10 p-0">
+<!--<div class="row justify-content-center m-0">
+    <div class="col-11 p-0">
         <div class="row mt-5">
-            <div class="col-12 col-lg-5 text-center">
-                <!--grafico wordcloud-->
-                <div id="my_dataviz"></div>
+            <div class="offset-lg-6 col-12 col-lg-6 text-lg-end text-center">
+                <div class="btn-group bg-white p-0" role="group" aria-label="Selettore della provenienza">
+                    <input type="radio" class="btn-check" name="keywords_source" id="keywords_source_darsena" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="keywords_source_darsena">Documenti Darsena</label>
+                  
+                    <input type="radio" class="btn-check" name="keywords_source" id="keywords_source_social" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="keywords_source_social">Social Networks</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 col-lg-5">
+                <div class="graph-area border shadow-sm">
+                    <div class="row justify-content-between px-4 pt-2">
+                        <div class="col-10 p-0">
+                            <p class="m-0 fw-bold">Wordcloud delle parole chiave</p>
+                        </div>
+                        <div class="col-2 p-0 d-none d-lg-block">
+                            <button class="">espandi</button>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div id="my_dataviz"></div>
+                    </div>
+                </div>
             </div>
             <div class="col-12 col-lg-7">
                 <div class="accordion accordion-flush" id="keywords_accordion">
@@ -48,6 +70,42 @@ Dashboard Keywords
                         </h2>
                         <div id="flush_collapse_3" class="accordion-collapse collapse" aria-labelledby="flush_header_3">
                             <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div class="row justify-content-center m-0">
+    <div class="col-11">
+        <!--wordcloud e altro-->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="row graph-area border shadow-sm">
+                    <div class="col-12">
+                        <div class="row">
+                            <p class="ms-1 mt-2 mb-0 fw-bold">Wordcloud delle parole chiave</p>
+                        </div>
+                        <div class="row text-center">
+                            <div id="my_dataviz"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--donut parole-->
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="row graph-area border shadow-sm">
+                    <div class="col-12">
+                        <div class="row">
+                            <p class="ms-1 mt-2 mb-0 fw-bold">Parole chiave</p>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                
+                            </div>
                         </div>
                     </div>
                 </div>

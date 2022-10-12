@@ -5,6 +5,35 @@ Analysis Result
 {% endblock %}
 
 {% block main %}
+<div class="modal fade" id="save_modal" tabindex="-1" aria-labelledby="save_title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border">
+            <div class="row justify-content-center">
+                <div class="col-10 p-0">
+                    <div class="row mt-3">
+                        <div class="col-12 d-flex align-items-center">
+                            <span class="d-inline bi bi-box-arrow-down"></span>
+                            <p class="d-inline fw-bold ms-2 mb-0 fs-5" id="save_title">Salvataggio</p>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <p class="m-0">Confermi di voler salvare questa analisi?</p>
+                            <p class="m-0">Potrai consultarla nuovamente nell'<span class="fw-bold">archivio</span>.</p>
+                        </div>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-12 text-end">
+                            <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                            <button class="btn btn-primary">S&igrave;, salva</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row justify-content-center m-0">
     <div class="col-10 my-4">
         <div class="row justify-content-between">
@@ -12,7 +41,7 @@ Analysis Result
                 <span class="bi bi-arrow-left-short"></span>
                 <span class="analysis-buttons-text ms-1">Torna indietro</span>
             </button>
-            <button class="analysis-button col-lg-2 border shadow-sm p-0 mb-3">
+            <button class="analysis-button col-lg-2 border shadow-sm p-0 mb-3" data-bs-toggle="modal" data-bs-target="#save_modal">
                 <span class="analysis-buttons-text fw-bold">Salva analisi</span>
                 <span class="bi bi-check"></span>
             </button>

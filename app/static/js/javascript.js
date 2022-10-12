@@ -17,25 +17,45 @@ $(document).ready(function() {
 
     // EVENTI ANALYSIS.HTML
     $(".file-area").hide();
-    $("#text_button").addClass("border-primary bg-primary");
-    $("#text_button").children().css("color", "white");
+    $("#upload_doc").prop("disabled", true);
+    $("#text_button").addClass("border-primary bg-primary").children().css("color", "white");
 
     $("#text_button").click(function() {
         $("#text_area").show();
+        $("#textarea").prop("disabled", false);
         $(".file-area").hide();
-        $(this).addClass("border-primary bg-primary");
-        $(this).children().css("color", "white");
-        $("#file_button").removeClass("border-primary bg-primary");
-        $("#file_button").children().css("color", "black");
+        $("#upload_doc").prop("disabled", true);
+        $(this).addClass("border-primary bg-primary").children().css("color", "white");
+        $("#file_button").removeClass("border-primary bg-primary").children().css("color", "black");
     });
-
     $("#file_button").click(function() {
         $(".file-area").show();
+        $("#upload_doc").prop("disabled", false);
         $("#text_area").hide();
-        $(this).addClass("border-primary bg-primary");
-        $(this).children().css("color", "white");
-        $("#text_button").removeClass("border-primary bg-primary");
-        $("#text_button").children().css("color", "black");
+        $("#textarea").prop("disabled", true);
+        $(this).addClass("border-primary bg-primary").children().css("color", "white");
+        $("#text_button").removeClass("border-primary bg-primary").children().css("color", "black");
+    });
+
+    $("#erase_document_button").click(function() {
+        $("#textarea").val("");
+        $("#upload_doc").val(null);
+    });
+
+    //se textarea (selezionata) o file (selezionato) sono vuoti, non succede nulla
+    $("#analyse_document_button").click(function(event) {
+        //se file-area ha display none ==> hidden, allora ho selezionato la textarea
+        if ($(".file-area").css("display") == "none") {
+            //controllo textarea vuota
+            if (!$.trim($("#textarea").val())) {
+                event.preventDefault();
+            }
+        } else {
+            //controllare file vuoto 
+            if ($("#upload_doc")[0].files.length === 0)   {
+                event.preventDefault();
+            }
+        }
     });
 
     // EVENTI ANALYSIS_RESULT.HTML
@@ -55,12 +75,17 @@ $(document).ready(function() {
         $(".bi-clipboard-check").show();
         $(this).attr('data-bs-original-title', "Copiato!").tooltip('show');
 
+        let copiedText = "";
+        $("#document_text>li>p").each(function() {
+            copiedText = [copiedText, $(this).text()].join(copiedText == "" ? "" : "\n\n");
+        });
+        navigator.clipboard.writeText(copiedText);
+
         //timer di 2 secondi
         setTimeout(function() {
             $(".bi-clipboard-check").hide();
             $(".bi-clipboard").show();
-            $(".copy-document").tooltip('hide');
-            $(".copy-document").attr('data-bs-original-title', "Copia negli appunti");
+            $(".copy-document").tooltip('hide').attr('data-bs-original-title', "Copia negli appunti");
         }, 2000);
     });
 

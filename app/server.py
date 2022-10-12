@@ -4,14 +4,22 @@ Created on Thu Sep 22 08:32:53 2022
 @author: Nicola
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 
-@app.route("/home")
+@app.route("/login")
+def login_page():
+    return render_template("login.html")
+
+@app.route("/registration")
+def registration_page():
+    return render_template("registration.html")
+
+@app.route("/")
 def home_page():
     return render_template("home.html")
 
@@ -45,4 +53,33 @@ def analysis_page():
 
 @app.route("/analysis/analysis-result")
 def analysis_result_page():
+    return render_template("analysis_result.html")
+
+# EVENTO BOTTONE INVIO DEL TESTO PER FARE LA SENTIMENT ANALYSIS
+@app.route("/analysis/analysis-result", methods=["POST"])
+def document_analysis():
+    
+    text_document = request.form.get("textarea")
+    file_document = request.form.get("upload_doc")
+    language = request.form["analysis_language"]
+    search_emotion = request.form.get("switch_feel")
+    
+    #if (search_emotion):
+    #    print("oonn")
+    #else:
+    #    print("NOOO")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     return render_template("analysis_result.html")

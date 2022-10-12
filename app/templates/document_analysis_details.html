@@ -5,6 +5,89 @@ Analysis Details Page
 {% endblock %}
 
 {% block main %}
+<div class="modal fade" id="update_modal" tabindex="-1" aria-labelledby="update_title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border">
+            <div class="row justify-content-center">
+                <div class="col-10 p-0">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <p class="fw-bold m-0 fs-5" id="update_title">Modifica parametri analisi</p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6 d-flex align-items-center">
+                                    <label for="sentiment_selector" class="form-label m-0">Sentiment Analysis:</label>
+                                </div>
+                                <div class="col-6">
+                                    <select name="sentiment_selector" id="sentiment_selector" class="form-select text-uppercase">
+                                        <option class="text-uppercase" value="pos">positivo</option>
+                                        <option class="text-uppercase" value="neu">neutrale</option>
+                                        <option class="text-uppercase" value="neg">negativo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6 d-flex align-items-center">
+                                    <label for="feel_selector" class="form-label m-0">Emozione:</label>
+                                </div>
+                                <div class="col-6">
+                                    <select name="feel_selector" id="feel_selector" class="form-select text-uppercase">
+                                        <option class="text-uppercase" value="fear">paura</option>
+                                        <option class="text-uppercase" value="angry">rabbia</option>
+                                        <option class="text-uppercase" value="sadness">tristezza</option>
+                                        <option class="text-uppercase" value="joy">gioia</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-12 text-end">
+                            <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                            <button class="btn btn-primary">Conferma e salva</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="delete_title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border">
+            <div class="row justify-content-center">
+                <div class="col-10 p-0">
+                    <div class="row mt-3">
+                        <div class="col-12 d-flex align-items-center">
+                            <span class="d-inline bi bi-exclamation-triangle"></span>
+                            <p class="d-inline fw-bold ms-2 mb-0 fs-5" id="delete_title">Eliminazione</p>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <p class="m-0">Confermi di voler eliminare questa analisi?</p>
+                        </div>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-12 text-end">
+                            <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                            <button class="btn btn-primary">S&igrave;, elimina</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row justify-content-center m-0">
     <div class="col-10 p-0">
         <div class="row gx-2 mt-3">
@@ -15,13 +98,13 @@ Analysis Details Page
                 </a>
             </div>
             <div class="col-lg-2 offset-lg-6 mb-3">
-                <button class="analysis-button col-12 border shadow-sm p-0">
-                    <span class="bi bi-gear"></span>
+                <button class="analysis-button col-12 border shadow-sm p-0" data-bs-toggle="modal" data-bs-target="#update_modal">
+                    <span class="bi bi-gear-fill"></span>
                     <span class="analysis-buttons-text ms-2">Modifica</span>
                 </button>
             </div>
             <div class="col-lg-2 pe-lg-0 mb-3">
-                <button class="analysis-button col-12 border shadow-sm p-0">
+                <button class="analysis-button col-12 border shadow-sm p-0" data-bs-toggle="modal" data-bs-target="#delete_modal">
                     <span class="bi bi-trash"></span>
                     <span class="analysis-buttons-text ms-2">Elimina</span>
                 </button>
@@ -66,6 +149,8 @@ Analysis Details Page
                                     </div>
                                 </div>
                             </li>
+                        </ul>
+                        <ul class="list-group mt-2 list-group-flush">
                             <li class="list-group-item">
                                 <div class="row justify-content-between">
                                     <div class="col align-self-center">
@@ -76,8 +161,6 @@ Analysis Details Page
                                     </div>
                                 </div>
                             </li>
-                        </ul>
-                        <ul class="list-group mt-2 list-group-flush">
                             <li class="list-group-item">
                                 <div class="row justify-content-between">
                                     <div class="col align-self-center">
@@ -95,16 +178,6 @@ Analysis Details Page
                                     </div>
                                     <div class="col text-end align-self-center">
                                         2022-09-20
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="row justify-content-between">
-                                    <div class="col align-self-center">
-                                        Origine
-                                    </div>
-                                    <div class="col text-end align-self-center">
-                                        Caricato a mano
                                     </div>
                                 </div>
                             </li>
@@ -159,12 +232,10 @@ Analysis Details Page
                         </button>
                     </div>
                 </div>
-                <div class="row">
-                    <ul class="list-group p-0">
+                <div class="row mb-3">
+                    <ul class="list-group p-0" id="document_text">
                         <li class="list-group-item border-0">
-                            <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : neutrale Intensit&agrave; : 91%">
-                                asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie ceweewcewc
-                            </p>
+                            <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : neutrale Intensit&agrave; : 91%">asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie ceweewcewc</p>
                         </li>
                         <li class="list-group-item border-0">
                             <p class="document-p m-0">asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie ceweewcewc</p>
