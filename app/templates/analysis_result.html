@@ -37,60 +37,25 @@ Analysis Result
 <div class="row justify-content-center m-0">
     <div class="col-10 my-4">
         <div class="row justify-content-between">
-            <button class="analysis-button col-lg-2 border shadow-sm p-0 mb-3">
+            <button class="analysis-button col-lg-2 border shadow-sm p-0 mb-3" type="button" id="analysis_result_back">
                 <span class="bi bi-arrow-left-short"></span>
                 <span class="analysis-buttons-text ms-1">Torna indietro</span>
             </button>
-            <button class="analysis-button col-lg-2 border shadow-sm p-0 mb-3" data-bs-toggle="modal" data-bs-target="#save_modal">
-                <span class="analysis-buttons-text fw-bold">Salva analisi</span>
-                <span class="bi bi-check"></span>
+            <button class="analysis-button col-lg-2 border border-primary shadow-sm p-0 mb-3" data-bs-toggle="modal" data-bs-target="#save_modal" id="save_analysis_button">
+                <span class="analysis-buttons-text fw-bold text-white">Salva analisi</span>
+                <span class="bi bi-check text-white"></span>
             </button>
         </div>
         <div class="row">
             <div class="col-lg-8 mb-3 ps-lg-0 pe-lg-3">
                 <ul class="list-group">
+                    {% for p in paragraphs_infos %}
                     <li class="list-group-item border-0">
-                        <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : positivo Intensit&agrave; : 98%">
-                            assbejbcb cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn
+                        <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : {{ p.sentiment }} Intensit&agrave; : {{ p.intensity }}%">
+                            {{ p.text }}
                         </p>
                     </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : neutrale Intensit&agrave; : 98%">
-                            assbejbcb cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn
-                        </p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : positivo Intensit&agrave; : 98%">
-                            assbejbcb cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn
-                        </p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
-                    <li class="list-group-item border-0">
-                        <p class="document-p m-0">assbejbcb ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j ncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc j cncsajcsc sncjsanckas asjcnakscnjs jscascn ncsjnc jcskasnc s csancjsnckjs sanckjanscjsac ajcsnaskncajscnascjnsajcnascjnasc ajscnasjcn sajcnascnjsa jckjnc jncs j j jskcjncsnc jscn</p>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
             <div class="col-lg-4">
@@ -104,16 +69,25 @@ Analysis Result
                                 <div class="row mt-1">
                                     <div class="col-12">
                                         <div class="row">
+                                            {% if text_sentiment == "positivo" %}
                                             <span class="bi bi-emoji-smile"></span>
+                                            {% elif text_sentiment == "neutrale" %}
+                                            <span class="bi bi-emoji-neutral"></span>
+                                            {% elif text_sentiment == "negativo" %}
+                                            <span class="bi bi-emoji-frown"></span>
+                                            {% endif %}
                                         </div>
                                         <div class="row">
-                                            <span class="fw-bold fs-5">POSITIVO</span>
+                                            <span class="fw-bold fs-5">{{ text_sentiment|upper }}</span>
                                         </div>
                                         <div class="row">
-                                            <span class="fst-italic mt-1">valutazione calcolata automaticamente sull'intero testo</span>
+                                            <span class="fst-italic mt-1">
+                                                valutazione precisa al <span class="fw-bold">33%</span> e calcolata automaticamente sull'intero testo
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
+                                {% if text_emotion %}
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="row">
@@ -122,7 +96,7 @@ Analysis Result
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="row">
-                                                    <span class="fw-bold fs-5">TRISTEZZA</span>
+                                                    <span class="fw-bold fs-5">{{ text_emotion|upper }}</span>
                                                 </div>
                                                 <div class="row">
                                                     <span class="fst-italic mt-1">emozione umana rilevata</span>
@@ -131,6 +105,7 @@ Analysis Result
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -141,12 +116,13 @@ Analysis Result
                         <div class="row text-center">
                             <div class="col-12 px-2 mt-2">
                                 <ul class="d-flex flex-wrap p-0 m-0 justify-content-center">
+                                    {% for word in text_keywords %}
                                     <li class="list-group-item border bg-secondary bg-opacity-10 mx-1 mb-2">
-                                        ciao
+                                        {{ word }}
                                     </li>
-                                    <li class="list-group-item border bg-secondary bg-opacity-10 mx-1 mb-2">
-                                        criminali
-                                    </li>
+                                    {% else %}
+                                    <li class="list-group-item text-secondary border-0 fst-italic">Nessuna corrispondenza trovata...</li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>

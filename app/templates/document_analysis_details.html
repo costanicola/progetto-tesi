@@ -92,10 +92,10 @@ Analysis Details Page
     <div class="col-10 p-0">
         <div class="row gx-2 mt-3">
             <div class="col-lg-2 ps-lg-0 mb-3">
-                <a class="text-decoration-none analysis-button col-12 border shadow-sm p-0" href="{{ url_for('archive_page') }}">
+                <button class="analysis-button col-12 border shadow-sm p-0" id="ciao">
                     <span class="bi bi-arrow-left-short"></span>
                     <span class="analysis-buttons-text ms-1">Torna indietro</span>
-                </a>
+                </button>
             </div>
             <div class="col-lg-2 offset-lg-6 mb-3">
                 <button class="analysis-button col-12 border shadow-sm p-0" data-bs-toggle="modal" data-bs-target="#update_modal">
@@ -111,9 +111,9 @@ Analysis Details Page
             </div>
         </div>
         <div class="row justify-content-between gx-2 mx-1">
-            <div class="col-lg-5 order-lg-last mb-3 mt-1">
+            <div class="col-lg-5 order-lg-last">
                 <!--informazioni scritte-->
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-12 px-0">
                         <div class="row mb-2">
                             <h2 class="text-lg-start text-center">Informazioni su questa analisi</h2>
@@ -131,6 +131,16 @@ Analysis Details Page
                                 <div class="row">
                                     <div class="col-12 text-end">
                                         <span class="text-modified text-muted">modificato in data 2022-11-09</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row justify-content-between">
+                                    <div class="col align-self-center">
+                                        Intensit&agrave; Sentiment
+                                    </div>
+                                    <div class="col text-end align-self-center">
+                                        52%
                                     </div>
                                 </div>
                             </li>
@@ -185,7 +195,7 @@ Analysis Details Page
                     </div>
                 </div>
                 <!--elenco parole-->
-                <div class="row mt-3 mt-lg-4">
+                <div class="row mt-3 mt-lg-4 mt-2">
                     <div class="col-12 px-0">
                         <div class="row mb-2">
                             <h2 class="text-lg-start text-center">Parole chiave trovate</h2>
@@ -203,10 +213,10 @@ Analysis Details Page
                                         polizia
                                     </li>
                                     <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        aiuto
+                                        asdfgh
                                     </li>
                                     <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        questi qua mi vogliono picchiare
+                                        bla bla bla bla bla
                                     </li>
                                     <li class="list-group-item border-0 bg-white mx-1 mb-2">
                                         ciao2
@@ -220,7 +230,7 @@ Analysis Details Page
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 order-lg-first mt-1">
+            <div class="col-lg-6 order-lg-first mt-2">
                 <div class="row mb-2">
                     <div class="col p-0">
                         <h2>Testo del documento</h2>

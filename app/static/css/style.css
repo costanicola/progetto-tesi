@@ -35,6 +35,7 @@ nav .bi {
 .graph-area {
     background: white;
     border-radius: 6px;
+    font-size: 17px;
 }
 
 .analysis-button, .analysis-option {
@@ -55,14 +56,14 @@ nav .bi {
     color: black;
 }
 
-#analyse_document_button {
-    background: #2f4fff;
+#analyse_document_button, #save_analysis_button {
+    background: #0D6EFD;
     color: white;
     font-size: 17px;
 }
 
-#analyse_document_button:hover {
-    background: #0026ff;
+#analyse_document_button:hover, #save_analysis_button:hover {
+    background: #0026FF;
 }
 
 textarea, .file-area {
@@ -161,4 +162,21 @@ h3 {
 
 .tooltip.bs-tooltip-start .tooltip-arrow::before {
     border-left-color: #2f4fff !important;
+}
+
+#darsena_piechart {
+    font-family: 'Bootstrap-icons';
+}
+
+.upper-advisor {
+    background: bisque;
+}
+
+.keyword-box {
+    width: 220px;
+    height: 220px;
+    text-align: center;
+    padding: 0;
+    background: white;
+    font-size: 17px;
 }

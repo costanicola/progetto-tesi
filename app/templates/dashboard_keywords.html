@@ -5,89 +5,17 @@ Dashboard Keywords
 {% endblock %}
 
 {% block main %}
-<!--<div class="row justify-content-center m-0">
-    <div class="col-11 p-0">
-        <div class="row mt-5">
-            <div class="offset-lg-6 col-12 col-lg-6 text-lg-end text-center">
-                <div class="btn-group bg-white p-0" role="group" aria-label="Selettore della provenienza">
-                    <input type="radio" class="btn-check" name="keywords_source" id="keywords_source_darsena" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="keywords_source_darsena">Documenti Darsena</label>
-                  
-                    <input type="radio" class="btn-check" name="keywords_source" id="keywords_source_social" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="keywords_source_social">Social Networks</label>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-12 col-lg-5">
-                <div class="graph-area border shadow-sm">
-                    <div class="row justify-content-between px-4 pt-2">
-                        <div class="col-10 p-0">
-                            <p class="m-0 fw-bold">Wordcloud delle parole chiave</p>
-                        </div>
-                        <div class="col-2 p-0 d-none d-lg-block">
-                            <button class="">espandi</button>
-                        </div>
-                    </div>
-                    <div class="row text-center">
-                        <div id="my_dataviz"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-7">
-                <div class="accordion accordion-flush" id="keywords_accordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush_header_1">
-                            <button class="accordion-button collapsed py-2 px-4" type="button" data-bs-toggle="collapse" data-bs-target="#flush_collapse_1" aria-expanded="false" aria-controls="flush_collapse_1">
-                                #{ NUMERO } { PAROLA }
-                            </button>
-                        </h2>
-                        <div id="flush_collapse_1" class="accordion-collapse collapse" aria-labelledby="flush_header_1">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        ciao
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush_header_2">
-                            <button class="accordion-button collapsed py-2 px-4" type="button" data-bs-toggle="collapse" data-bs-target="#flush_collapse_2" aria-expanded="false" aria-controls="flush_collapse_2">
-                                #2 SICUREZZA
-                            </button>
-                        </h2>
-                        <div id="flush_collapse_2" class="accordion-collapse collapse" aria-labelledby="flush_header_2">
-                            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush_header_3">
-                            <button class="accordion-button collapsed py-2 px-4" type="button" data-bs-toggle="collapse" data-bs-target="#flush_collapse_3" aria-expanded="false" aria-controls="flush_collapse_3">
-                                #3 BICICLETTA
-                            </button>
-                        </h2>
-                        <div id="flush_collapse_3" class="accordion-collapse collapse" aria-labelledby="flush_header_3">
-                            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
 <div class="row justify-content-center m-0">
     <div class="col-11">
         <!--wordcloud e altro-->
         <div class="row mt-4">
             <div class="col-12">
-                <div class="row graph-area border shadow-sm">
+                <div class="row graph-area border shadow-sm text-center">
                     <div class="col-12">
                         <div class="row">
-                            <p class="ms-1 mt-2 mb-0 fw-bold">Wordcloud delle parole chiave</p>
+                            <p class="mt-2 mb-0 fw-bold">Wordcloud delle parole chiave</p>
                         </div>
-                        <div class="row text-center">
+                        <div class="row">
                             <div id="my_dataviz"></div>
                         </div>
                     </div>
@@ -100,13 +28,9 @@ Dashboard Keywords
                 <div class="row graph-area border shadow-sm">
                     <div class="col-12">
                         <div class="row">
-                            <p class="ms-1 mt-2 mb-0 fw-bold">Parole chiave</p>
+                            <p class="mt-2 mb-0 fw-bold text-center">Parole chiave</p>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                
-                            </div>
-                        </div>
+                        <div class="row row-cols-auto flex-row justify-content-center flex-wrap m-3" id="keywords_space"></div>
                     </div>
                 </div>
             </div>
@@ -115,50 +39,49 @@ Dashboard Keywords
 </div>
 <script>
 
-    // List of words
-    var myWords = [{word: "Cristo", size: "31"},{word: "Maremma", size: "22"},{word: "Cinghiala", size: "21"},{word: "Arinza arunza", size: "13"}, {word: "Running", size: "10"}, {word: "Surfing", size: "20"}, {word: "Climbing", size: "50"}, {word: "Kiting", size: "30"}, {word: "Sailing", size: "20"}, {word: "Snowboarding", size: "60"} ]
-    
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 10, bottom: 10, left: 10},
-        width = 450 - margin.left - margin.right,
-        height = 450 - margin.top - margin.bottom;
-    
-    // append the svg object to the body of the page
-    var svg = d3.select("#my_dataviz").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
-    
-    // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
-    // Wordcloud features that are different from one word to the other must be here
-    var layout = d3.layout.cloud()
-      .size([width, height])
-      .words(myWords.map(function(d) { return {text: d.word, size:d.size}; }))
-      .padding(5)        //space between words
-      .rotate(function() { return ~~(Math.random() * 2) * 90; })
-      .fontSize(function(d) { return d.size; })      // font size of words
-      .on("end", draw);
-    layout.start();
-    
-    // This function takes the output of 'layout' above and draw the words
-    // Wordcloud features that are THE SAME from one word to the other can be here
-    function draw(words) {
-      svg
+        var width = 450
+            height = 450
+            margin = 40
+
+        // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+        var radius = Math.min(width, height) / 2 - margin
+
+        // append the svg object to the div called 'my_dataviz'
+        var svg = d3.select("#my_dataviz")
+        .append("svg")
+            .attr("width", width)
+            .attr("height", height)
         .append("g")
-          .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
-          .selectAll("text")
-            .data(words)
-          .enter().append("text")
-            .style("font-size", function(d) { return d.size; })
-            .style("fill", "#69b3a2")
-            .attr("text-anchor", "middle")
-            .style("font-family", "Impact")
-            .attr("transform", function(d) {
-              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-            })
-            .text(function(d) { return d.text; });
-    }
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        // Create dummy data
+        var data = {"a": 9, "b": 20, "c":30, "d":8, "e":12}
+
+        // set the color scale
+        var color = d3.scaleOrdinal()
+        .domain(data)
+        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"])
+
+        // Compute the position of each group on the pie:
+        var pie = d3.pie()
+        .value(function(d) {return d.value; })
+        var data_ready = pie(d3.entries(data))
+
+        // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+        svg
+        .selectAll('whatever')
+        .data(data_ready)
+        .enter()
+        .append('path')
+        .attr('d', d3.arc()
+            .innerRadius(100)         // This is the size of the donut hole
+            .outerRadius(radius)
+        )
+        .attr('fill', function(d){ return(color(d.data.key)) })
+        .attr("stroke", "black")
+        .style("stroke-width", "2px")
+        .style("opacity", 0.7)
+            
     </script>
 {% endblock %}
