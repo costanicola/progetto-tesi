@@ -180,3 +180,15 @@ h3 {
     background: white;
     font-size: 17px;
 }
+
+.solid {
+    stroke: solid;
+}
+
+.dashed {
+    stroke-dasharray: 13,8;
+}
+
+.dotted {
+    stroke-dasharray: 3,3;
+}
