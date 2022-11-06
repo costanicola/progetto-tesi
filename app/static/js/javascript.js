@@ -93,211 +93,50 @@ $(document).ready(function() {
         }, 2000);
     });
 
+    // EVENTI DASHBOARD_KEYWORDS.HTML
+    const similarKeywords = new Set();
 
-    // PIECHART DARSENA
-    const darsenaPieData = JSON.parse($("#darsena_piechart").attr("data"));
-    const darsenaPieDataTotal = d3.sum(d3.values(darsenaPieData));
+    $("#add_keyword_similar_button").click(function() {
+        const word = $.trim($("#keyword_similar").val()).toLowerCase();
+        
+        if (word.length > 2) {
 
-    //se non ci sono dati non mostro legenda e pie
-    darsenaPieDataTotal === 0 ? $("#darsena_piechart, #darsena_piechart_legend, #darsena_linechart, #darsena_linechart_legend").hide() : $(".no-data-display").hide();
+            if (!similarKeywords.has(word)) {
+                const wordId = word.replace(" ", "_")
 
-    const darsenaPieColor = d3.scaleOrdinal().domain(darsenaPieData).range(["#1A85FF", "#ECE839", "#D41159"]);
-    const darsenaPie = d3.pie().value(d => d.value);
-    const darsenaPieDataReady = darsenaPie(d3.entries(darsenaPieData));
-    const darsenaPieSvg = d3.select("#darsena_piechart").append("svg").attr("id", "darsena_pie_svg").append("g").attr("id", "darsena_pie_g");
+                $("#similar_keyword_list").prepend(`
+                    <li class="list-group-item border-0 p-0" id="${wordId}_li">
+                        <div class="row border-0 mx-3 border-bottom">
+                            <div class="col-10 d-flex align-items-center">
+                                ${word}
+                            </div>
+                            <div class="col-2 d-flex align-items-center">
+                                <button class="bg-transparent border-0" id="${wordId}_x_button">
+                                    <span class="add_keyword_similar_button_icon bi bi-x"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                `);
 
-    //legenda piechart
-    const darsenaPieLegendSvg = d3.select("#darsena_piechart_legend").append("svg").attr("width", 275).attr("height", 30).append("g").attr("transform", "translate(0,0)");
+                $("#" + wordId + "_x_button").click(function() {
+                    $("#" + wordId + "_li").remove();
+                    similarKeywords.delete(word);
+                });
 
-    //quadratini legenda
-    darsenaPieLegendSvg.selectAll("pieDesc").data(darsenaPieDataReady).enter().append("rect")
-    .attr("x", d => d.index * 94).attr("width", 14).attr("height", 14).attr("fill", d => darsenaPieColor(d.index));
+                $("#keyword_similar").val("");
+            }
 
-    //testo della legenda
-    darsenaPieLegendSvg.selectAll("pieDesc").data(darsenaPieDataReady).enter().append("text")
-    .text(d => d.data.key).attr("x", d => 18 + (d.index * 94)).attr("y", 12)
-    .style("font-family", "system-ui").style("font-size", "16px");
-
-    //tooltip ed eventi del grafico
-    const darsenaPieTooltip = d3.select("#darsena_piechart").append("div")
-    .style("opacity", 0).attr("class", "tooltip").style("background-color", "white")
-    .style("border", "solid").style("border-width", "2px").style("border-radius", "5px").style("padding", "5px");
-
-    const darsenaPieMouseover = function(d) {
-        darsenaPieTooltip.style("opacity", 1);
-        d3.select(this).style("opacity", 1);
-    };
-    
-    const darsenaPieMousemove = function(d) {
-        darsenaPieTooltip.html("N° analisi con risultato " + d.data.key + ": " + d.value + " (<span class='fw-bold'>" + d3.format(".0%")(d.value / darsenaPieDataTotal) + "</span>)")
-        .style("left", d3.event.pageX - 130 + "px").style("top", d3.event.pageY - 45 + "px");
-    };
-    
-    const darsenaPieMouseleave = function(d) {
-        darsenaPieTooltip.style("opacity", 0);
-        d3.select(this).style("opacity", 0.8);
-    };
-
-    // LINECHART DARSENA
-    const darsenaLineData = [
-        {data: "2022-05-12", sentiment: "positivo", n: 4},
-        {data: "2022-06-11", sentiment: "positivo", n: 5},
-        {data: "2022-10-29", sentiment: "positivo", n: 2},
-        {data: "2022-10-30", sentiment: "positivo", n: 0},
-        {data: "2022-05-12", sentiment: "neutrale", n: 0},
-        {data: "2022-06-11", sentiment: "neutrale", n: 2},
-        {data: "2022-10-29", sentiment: "neutrale", n: 4},
-        {data: "2022-10-30", sentiment: "neutrale", n: 14},
-        {data: "2022-05-12", sentiment: "negativo", n: 1},
-        {data: "2022-06-11", sentiment: "negativo", n: 6},
-        {data: "2022-10-29", sentiment: "negativo", n: 0},
-        {data: "2022-10-30", sentiment: "negativo", n: 0}
-    ];
-
-    const darsenaLineMargin = {top: 10, right: 10, bottom: 20, left: 30};
-    const darsenaLineSvg = d3.select("#darsena_linechart").append("svg").attr("id", "darsena_line_svg").append("g").attr("id", "darsena_line_g");
-    const darsenaLineGroupData = d3.nest().key(d => d.sentiment).entries(darsenaLineData);
-    const darsenaLineColor = d3.scaleOrdinal().domain(darsenaLineGroupData.map(d => d.key)).range(["#1A85FF", "#ECE839", "#D41159"]);
-    const darsenaLineStyle = d3.scaleOrdinal().domain(darsenaLineGroupData.map(d => d.key)).range(["solid", "dashed", "dotted"]);
-    
-    const darsenaLineTooltip = d3.select("#darsena_linechart").append("div")
-    .style("opacity", 0).attr("class", "tooltip").style("background-color", "white")
-    .style("border", "solid").style("border-width", "2px").style("border-radius", "5px").style("padding", "5px");
-
-    const darsenaLineTooltipLine = darsenaLineSvg.append("line").style("opacity", 0);  // linea che si muove nel grafico
-    const darsenaLineLegendSvg = d3.select("#darsena_linechart_legend").append("svg").attr("id", "linechart_legend_svg").append("g").attr("id", "linechart_legend_g");
-
-
-    adaptDarsenaCharts();
-
-    $(window).resize(function() {
-        adaptDarsenaCharts();
+            similarKeywords.add(word);
+        }
     });
 
-    function adaptDarsenaCharts() {
+    // EVENTI DASHBOARD_SOCIAL.HTML
+    
 
-        // PIECHART
-        let containerWidth = Math.floor($("#darsena_piechart").width());
-        const currentDimension = containerWidth <= 380 ? containerWidth : 380;  //380 -> grandezza default del grafico
-        const darsenaPieRadius = currentDimension / 2 - 10;  //10 -> un po' di margine
-        const darsenaPieArcGenerator = d3.arc().innerRadius(0).outerRadius(darsenaPieRadius);
-
-        //sistemo le dimensioni del pie chart
-        $("#darsena_pie_svg").attr("width", currentDimension).attr("height", currentDimension);
-        $("#darsena_pie_g").attr("transform", "translate(" + currentDimension / 2 + "," + currentDimension / 2 + ")")
-        .children().remove("path").remove("text");
-
-        //aggiungo il piechart
-        darsenaPieSvg.selectAll("pieSlices").data(darsenaPieDataReady).enter().append("path")
-        .attr("d", darsenaPieArcGenerator).attr("fill", d => darsenaPieColor(d.data.key)).attr("stroke", "black")
-        .style("stroke-width", "2px").style("opacity", 0.8)
-        .on("mouseover", darsenaPieMouseover).on("mousemove", darsenaPieMousemove).on("mouseleave", darsenaPieMouseleave);
-
-        //aggiungo i label (emoji)
-        darsenaPieSvg.selectAll("pieSlices").data(darsenaPieDataReady).enter().append("text")
-        .text(function(d) {
-            if (d.data.key == "positivo" && d.value != 0) {
-                return "\uF327";
-            } else if (d.data.key == "neutrale" && d.value != 0) {
-                return "\uF323";
-            } else if (d.data.key == "negativo" && d.value != 0) {
-                return "\uF31D";
-            }
-        })
-        .attr("transform", d => "translate(" + darsenaPieArcGenerator.centroid(d) + ")")
-        .style("text-anchor", "middle").style("font-size", 29)
-        .on("mouseover", darsenaPieMouseover).on("mousemove", darsenaPieMousemove).on("mouseleave", darsenaPieMouseleave);
-
-        // LINECHART
-        containerWidth = Math.floor($("#darsena_linechart").width()) - (darsenaLineMargin.left + darsenaLineMargin.right);
-        const darsenaLineWidth = containerWidth <= 750 ? containerWidth : 750;
-        const darsenaLineHeight = currentDimension - (darsenaLineMargin.top + darsenaLineMargin.bottom);
-
-        $("#darsena_line_svg").attr("width", darsenaLineWidth + darsenaLineMargin.left + darsenaLineMargin.right).attr("height", darsenaLineHeight + darsenaLineMargin.top + darsenaLineMargin.bottom);
-        $("#darsena_line_g").attr("transform", "translate(" + darsenaLineMargin.left + "," + darsenaLineMargin.top + ")")
-        .children().remove("g").remove("path").remove("rect").remove("text");
-
-        const darsenaLineX = d3.scaleTime().domain(d3.extent(darsenaLineData, d => new Date(d.data))).range([0, darsenaLineWidth]);
-        darsenaLineSvg.append("g").attr("transform", "translate(0," + darsenaLineHeight + ")").call(d3.axisBottom(darsenaLineX).tickFormat(d3.timeFormat("%Y-%m")));
-
-        const darsenaLineY = d3.scaleLinear().domain([0, d3.max(darsenaLineData, d => d.n)]).range([darsenaLineHeight, 0]);
-        darsenaLineSvg.append("g").call(d3.axisLeft(darsenaLineY));
-
-        darsenaLineSvg.selectAll(".line").data(darsenaLineGroupData).enter().append("path")
-        .attr("fill", "none").attr("stroke", d => darsenaLineColor(d.key)).attr("stroke-width", 2.5).attr("class", d => darsenaLineStyle(d.key))
-        .attr("d", d => d3.line().x(d => darsenaLineX(new Date(d.data))).y(d => darsenaLineY(d.n))(d.values));
-
-        //eventi tooltip linechart
-        const drawLineTooltip = function() {
-            const date = d3.timeFormat("%Y-%m-%d")(darsenaLineX.invert(d3.mouse(this)[0]));
-            const bisect = d3.bisector(d => d.data).left;  //right, che mi servirebbe, non funziona!
-            
-            darsenaLineGroupData.forEach((d) => {
-                darsenaLineTooltipLine.style("opacity", 1).attr("stroke", "gray")
-                .attr("x1", darsenaLineX(new Date(d.values[bisect(d.values, date)].data)))
-                .attr("x2", darsenaLineX(new Date(d.values[bisect(d.values, date)].data)))
-                .attr("y1", 0).attr("y2", darsenaLineHeight);
-
-                darsenaLineTooltip.html("<div class='fw-bold'>" + date + "</div>")
-                .style("opacity", 1).style("left", d3.event.pageX + 16 + "px").style("top", d3.event.pageY - 45 + "px")
-                .selectAll().data(darsenaLineGroupData).enter().append("div")
-                .html(d.values[bisect(d.values, date)].data == date ? e => (e.key + ": " + e.values.find(h => h.data == date).n) : "")
-            });
-        };
-        
-        const removeLineTooltip = function() {
-            darsenaLineTooltip.style("opacity", 0);
-            darsenaLineTooltipLine.style("opacity", 0);
-        };
-
-        //si crea un rettangolo nel grafico su cui vengono mostrati il tooltip e la linea del tempo
-        darsenaLineSvg.append("rect").attr("width", darsenaLineWidth).attr("height", darsenaLineHeight).attr("opacity", 0)
-        .on("mousemove", drawLineTooltip).on("mouseout", removeLineTooltip);
-
-        //legenda linechart
-        const darsenaLineLegendWidth = containerWidth <= 450 ? 130 : 450;
-        const darsenaLineLegendHeight = darsenaLineLegendWidth === 450 ? 30 : 75;
-
-        $("#linechart_legend_svg").attr("width", darsenaLineLegendWidth).attr("height", darsenaLineLegendHeight);
-        $("#linechart_legend_g").children().remove("line").remove("text");
-
-        //lineette legenda
-        darsenaLineLegendSvg.selectAll("lineDesc").data(darsenaLineGroupData).enter().append("line")
-        .style("stroke", d => darsenaPieColor(d.key)).style("stroke-width", 4).attr("class", d => darsenaLineStyle(d.key))
-        .attr("x1", (d, i) => darsenaLineLegendWidth === 450 ?  i * 150 : 0)
-        .attr("y1", (d, i) => darsenaLineLegendHeight === 30 ? 9 : 9 + (i * 25))
-        .attr("x2", (d, i) => darsenaLineLegendWidth === 450 ? (i * 150) + 60 : 60)
-        .attr("y2", (d, i) => darsenaLineLegendHeight === 30 ? 9 : 9 + (i * 25));
-
-        //testo della legenda
-        darsenaLineLegendSvg.selectAll("pieDesc").data(darsenaLineGroupData).enter().append("text")
-        .text(d => d.key).style("font-family", "system-ui").style("font-size", "16px")
-        .attr("x", (d, i) => darsenaLineLegendWidth === 450 ? 64 + (i * 150) : 64)
-        .attr("y", (d, i) => darsenaLineLegendHeight === 30 ? 12 : 12 + (i * 25));
-
-
-        //legenda linechart
-        /*const darsenaLineLegendPos = [];  // lista con tutte le posizioni dei label della legenda, cosi non si avranno sovrapposizioni
-
-        darsenaLineSvg.selectAll(".legend-item").data(darsenaLineGroupData).enter().append("text")
-        .attr("class", "legend-item").text(d => d.key).attr("fill", d => darsenaLineColor(d.key)).attr("font-size", 14).attr("font-weight", "bold")
-        .attr("alignment-baseline", "middle").attr("x", darsenaLineWidth).attr("dx", "5px")
-        .attr("y", function(d) {
-            let yPos = darsenaLineY(d.values[d.values.length-1].n);
-            
-            while (darsenaLineLegendPos.includes(yPos)) {
-                yPos -= 18;
-            }
-            
-            darsenaLineLegendPos.push(yPos);
-            return yPos;
-        });*/
-
-    }
-
-
-    // PAROLE CHIAVE: DONUT CHART
-    /*const keywords = {
+    
+    // PAROLE CHIAVE
+    const keywords = {
         "polizia": {
             "positivo": {
                 "social": {
@@ -385,6 +224,75 @@ $(document).ready(function() {
                 },
                 "darsena": []
             }
+        },
+        "abcde": {
+            "positivo": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            },
+            "neutrale": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            },
+            "negativo": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            }
+        },
+        "INTERGENERAZIONALITÀ": {
+            "positivo": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            },
+            "neutrale": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            },
+            "negativo": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            }
+        },
+        "IMPRESE CULTURALI CREATIVE": {   // !! ATTENZIONE CON LE PAROLE COMPOSTE: GLI SPAZI NON FANNO ATTIVARE GLI ID DI HTML !!
+            "positivo": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            },
+            "neutrale": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            },
+            "negativo": {
+                "social": {
+                    "facebook": [],
+                    "instagram": []
+                },
+                "darsena": []
+            }
         }
     };
 
@@ -398,10 +306,49 @@ $(document).ready(function() {
     for (const key in keywords) {  //polizia, bicicletta, poddare, ...
 
         $("#keywords_space").append(`
-            <div class="col keyword-box border m-3">
+            <div class="modal fade" id="keyword_${key}_modal" tabindex="-1" aria-labelledby="${key}_title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content border">
+                        <div class="row justify-content-center">
+                            <div class="col-11 text-center">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <p class="fw-bold mb-0 fs-5 text-uppercase" id="${key}_title">${key}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="mb-0 text-secondary"><span class="fst-italic">Parole simili attribuite a questa:</span> blabla, dinoinciwec, wenwucne, ejcnen ecweewfefwfdsa.</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <!--tabella-->
+                                    <div class="col-12 col-lg-6">
+                                        ciao, tabella
+                                    </div>
+                                    <!--linechart-->
+                                    <div class="col-12 col-lg-6" id="${key}_linechart"></div>
+                                </div>
+                                <div class="row my-4">
+                                    <div class="col-12 text-end">
+                                        <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col keyword-box m-3 mx-4 d-flex align-content-center flex-wrap flex-column justify-content-center">
                 <div class="row">
                     <div class="col">
-                        <div id="keyword_${key}"></div>
+                        <p class="m-0 text-uppercase fw-bold fs-5">${key}</p>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col">
+                        <a class="text-decoration-none text-secondary" href="#keyword_${key}_modal" data-bs-toggle="modal" data-bs-target="#keyword_${key}_modal">vedi dettagli ></a>
                     </div>
                 </div>
             </div>
@@ -431,10 +378,6 @@ $(document).ready(function() {
         }
     }
 
-    $("#keywords_space").append(`
-        <div class="col keyword-box border m-3 d-flex align-items-center justify-content-center">
-            bottone +
-        </div>
-    `);*/
+    
 
 });

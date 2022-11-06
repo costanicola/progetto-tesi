@@ -16,6 +16,7 @@
     <!--JQuery & JavaScript-->
     <script src="{{ url_for('static', filename='js/jquery-3.6.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/javascript.js') }}"></script>
+    {% block file %}{% endblock %}
 </head>
 <body>
     <div class="modal fade" id="logout_modal" tabindex="-1" aria-labelledby="logout_title" aria-hidden="true">

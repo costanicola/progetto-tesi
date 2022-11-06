@@ -4,6 +4,10 @@
 Dashboard Darsena Page
 {% endblock %}
 
+{% block file %}
+<script src="{{ url_for('static', filename='js/darsena-chart.js') }}"></script>
+{% endblock %}
+
 {% block main %}
 <div class="row m-0 justify-content-center">
     <div class="col-12 p-0">
@@ -50,10 +54,4 @@ Dashboard Darsena Page
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-
-
-    
-</script>
 {% endblock %}

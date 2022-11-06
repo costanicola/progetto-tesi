@@ -56,13 +56,13 @@ nav .bi {
     color: black;
 }
 
-#analyse_document_button, #save_analysis_button {
+#analyse_document_button, #save_analysis_button, #new_keyword_button {
     background: #0D6EFD;
     color: white;
     font-size: 17px;
 }
 
-#analyse_document_button:hover, #save_analysis_button:hover {
+#analyse_document_button:hover, #save_analysis_button:hover, #new_keyword_button:hover {
     background: #0026FF;
 }
 
@@ -173,12 +173,15 @@ h3 {
 }
 
 .keyword-box {
-    width: 220px;
-    height: 220px;
+    width: 180px;
+    height: 180px;
     text-align: center;
     padding: 0;
     background: white;
-    font-size: 17px;
+    font-size: 16px;
+    border: 3px solid lightsteelblue;
+    border-radius: 50%;
+
 }
 
 .solid {
@@ -191,4 +194,8 @@ h3 {
 
 .dotted {
     stroke-dasharray: 3,3;
+}
+
+.add_keyword_similar_button_icon {
+    font-size: 24px;
 }
