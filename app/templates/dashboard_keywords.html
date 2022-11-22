@@ -4,6 +4,13 @@
 Dashboard Keywords
 {% endblock %}
 
+{% block file %}
+<!-- JSON5 (https://github.com/json5/json5) consente l'uso dell'apice singolo per indicare una stringa in json -->
+<script src="https://unpkg.com/json5@2/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+<script src="{{ url_for('static', filename='js/keywords-charts.js') }}"></script>
+{% endblock %}
+
 {% block main %}
 <div class="modal fade" id="new_keyword_modal" tabindex="-1" aria-labelledby="new_title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -23,17 +30,9 @@ Dashboard Keywords
                                 </div>
                                 <div class="col-7">
                                     <select name="keyword_category_selector" id="keyword_category_selector" class="form-select text-uppercase">
-                                        <option value="ta1">TA1</option>
-                                        <option value="ta2">TA2</option>
-                                        <option value="ta3">TA3</option>
-                                        <option value="ta4">TA4</option>
-                                        <option value="ta5">TA5</option>
-                                        <option value="laboratorio">TATTICA: DARSENA LABORATORIO</option>
-                                        <option value="cosmopolita">TATTICA: DARSENA COSMOPOLITA</option>
-                                        <option value="verde">TATTICA: DARSENA VERDE</option>
-                                        <option value="progetto">PROGETTO</option>
-                                        <option value="evento">EVENTO</option>
-                                        <option value="lista">LISTA TRASVERSALE</option>
+                                        {% for cat_id, cat_name in categories_infos %}
+                                        <option value="value_cat{{ cat_id }}">{{ cat_name }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>
@@ -99,24 +98,14 @@ Dashboard Keywords
                     </div>
                     <div class="row mt-3">
                         <ul class="list-group p-0">
+                            {% for cat_id, cat_name in attendances_categories_infos %}
                             <li class="list-group-item border-0">
                                 <div class="form-check form-switch m-0">
-                                    <input class="form-check-input me-2" type="checkbox" role="switch" name="switch_cat1" id="switch_cat1">
-                                    <label class="form-check-label" for="switch_cat1">TA1</label>
+                                    <input class="form-check-input me-2" type="checkbox" role="switch" name="switch_cat{{ cat_id }}" id="switch_cat{{ cat_id }}">
+                                    <label class="form-check-label" for="switch_cat{{ cat_id }}">{{ cat_name }}</label>
                                 </div>
                             </li>
-                            <li class="list-group-item border-0">
-                                <div class="form-check form-switch m-0">
-                                    <input class="form-check-input me-2" type="checkbox" role="switch" name="switch_cat2" id="switch_cat2">
-                                    <label class="form-check-label" for="switch_cat2">TA2</label>
-                                </div>
-                            </li>
-                            <li class="list-group-item border-0">
-                                <div class="form-check form-switch m-0">
-                                    <input class="form-check-input me-2" type="checkbox" role="switch" name="switch_cat3" id="switch_cat3">
-                                    <label class="form-check-label" for="switch_cat3">TA3</label>
-                                </div>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="row my-4">
@@ -147,24 +136,33 @@ Dashboard Keywords
                 <div class="row graph-area border shadow-sm text-center">
                     <div class="col-12">
                         <div class="row">
-                            <p class="mt-2 mb-0 fw-bold">Wordcloud delle parole chiave</p>
+                            <p class="mt-2 mb-0 fw-bold fs-5">Wordcloud delle parole chiave</p>
                         </div>
                         <div class="row">
-                            <div id="my_dataviz"></div>
+                            <div data="{{ keywords_infos }}" id="keywords_wordcloud"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--donut parole-->
+        <!--lista parole suddivise per categoria-->
         <div class="row mt-3">
             <div class="col-12">
                 <div class="row graph-area border shadow-sm">
                     <div class="col-12">
                         <div class="row">
-                            <p class="mt-2 mb-0 fw-bold text-center">Parole chiave</p>
+                            <p class="mt-2 mb-0 fw-bold text-center fs-5">Parole chiave</p>
                         </div>
-                        <div class="row row-cols-auto flex-row justify-content-center flex-wrap m-3" id="keywords_space"></div>
+                        {% for cat_id, cat_name in attendances_categories_infos %}
+                        <div class="row">
+                            <p class="mt-3 mb-0 fw-bold text-center text-decoration-underline text-uppercase">{{ cat_name }}</p>
+                        </div>
+                        <div class="row row-cols-auto flex-row justify-content-center flex-wrap m-3" id="keywords_list_cat{{ cat_id }}"></div>
+                        {% else %}
+                        <div class="row">
+                            <p class="mt-3 mb-0 text-secondary text-center fst-italic">Ancora nessuna parola chiave...</p>
+                        </div>
+                        {% endfor %}
                         <hr class="mx-5 my-4" />
                         <div class="row mb-4">
                             <div class="col-12 d-flex justify-content-center">

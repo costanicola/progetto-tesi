@@ -224,5 +224,23 @@ def instagram_search():
         res_media = requests.get(res_media["paging"]["next"]).json()
             
 
-facebook_search()
-instagram_search()
+s = """ZamenhOFF edicola sociale e Casa delle Memorie vive
+Un progetto per creare nuovi spazi e servizi aperti alla città e ai suoi visitatori. Un progetto per la rigenerazione delle comunità e con le comunità
+
+Il proponente | Chi
+Villaggio Globale cooperativa sociale
+
+Partners: Sguardi in Camera APS; Asja Lacis APS; AIDIA-TS (sostenitori: ACER Ravenna; Centro sociale La Quercia; UISP Ravenna; Parrocchia di San Pie Damiano; gruppo Scout Ravenna 4)
+
+Tipologia di progetto | Parole chiave
+Attivazione e riuso dei beni comuni | Arte |Cultura | Memoria storica | Inclusione | Co-progettazione | Ambiente
+
+La proposta | Cosa
+ZamenhOFF è un progetto che nasce nel quartiere Darsena - Gulli per promuovere attività culturali e servizi sociali, in due luoghi connessi:
+
+Casa delle memorie vive. Una casa per attività artistiche e sociali dedicate al legame tra luoghi e persone, attraverso la ricerca ed il coinvolgimento diretto degli individui. Azioni previste: centro di raccolta ed elaborazione di storie, documenti, fotografie e film provenienti da archivi privati di nuovi e vecchi abitanti del quartiere; realizzazione di laboratori e seminari con la partecipazione diretta di artisti, antropologi, sociologi, architetti e storici; promozione dell'abitare collaborativo, festival annuale.
+Portierato sociale. Una portineria sociale per sostenere nelle incombenze della vita quotidiana: assistenza per pratiche digitali, punto informativo, disbrigo di pratiche amministrative per la popolazione straniera e per gli anziani...
+ZamenhOFF è un progetto di Villaggio Globale coop. sociale, Sguardi in Camera APS, Asja Lacis APS, AIDIA (Associazione Italiana Donne e Ingegneri e architetti) Ravenna - Trieste; ha una rete di partner nel quartiere, tra cui ACER Ravenna."""
+
+sent = analyse_text(s)
+check_keywords_presence("ZamenhOFF", s, "", "", sent)

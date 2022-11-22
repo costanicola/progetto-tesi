@@ -5,13 +5,15 @@ Created on Thu Sep 22 08:32:53 2022
 """
 
 import os
-from flask import Flask, render_template, request, jsonify, current_app
+from flask import Flask, render_template, request
+from flask.json import jsonify
 import threading
 from database import DB
 import social_api as api
 #from sentiment_analyzer import Sentiment, Emotion
 import text_handler as th
 import file_handler as fh
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -123,9 +125,32 @@ def dashboard_social_page():
 @app.route("/dashboard-keywords")
 def dashboard_keywords_page():
     
-    keywords = ["polizia", "bicicletta", "darsena", "amici", "marciapiede", "sicurezza", "poddare", "sostenibilità"]
+    keywords_sentiment_quantities = db.get_all_keywords_sentiment_quantities()
+    all_categories = {q["categoryId"]: q["categoryName"] for q in db.get_all_keywords_categories()}.items()
+    attendances_categories = {q["categoryId"]: q["categoryName"] for q in keywords_sentiment_quantities}.items()
     
-    return render_template("dashboard_keywords.html", keywords_list=keywords)
+    return render_template("dashboard_keywords.html", keywords_infos=keywords_sentiment_quantities, categories_infos=all_categories, attendances_categories_infos=attendances_categories)
+
+
+@app.route("/dashboard-keywords/keyword-<keyword_id>", methods=["POST"])
+def dashboard_keywords_charts_modal(keyword_id):
+    
+    total_piechart = db.get_keyword_total_sentiment_quantities(keyword_id)
+    facebook_piechart = db.get_keyword_social_sentiment_quantities(keyword_id, "facebook")
+    instagram_piechart = db.get_keyword_social_sentiment_quantities(keyword_id, "instagram")
+    document_piechart = db.get_keyword_document_sentiment_quantities(keyword_id)
+    
+    single_linechart_data = []
+    total_linechart_data = []
+    for r in db.get_keyword_sentiment_quantities_through_time(keyword_id):
+        single_linechart_data.append({"date": r["analysisAddedDate"].strftime("%Y-%m-%d"), "sentiment": "positivo", "n": r["totalPositives"]})
+        single_linechart_data.append({"date": r["analysisAddedDate"].strftime("%Y-%m-%d"), "sentiment": "neutrale", "n": r["totalNeutrals"]})
+        single_linechart_data.append({"date": r["analysisAddedDate"].strftime("%Y-%m-%d"), "sentiment": "negativo", "n": r["totalNegatives"]})
+        total_linechart_data.append({"date": r["analysisAddedDate"].strftime("%Y-%m-%d"), "n": (r["totalPositives"] + r["totalNeutrals"] + r["totalNegatives"])})
+    
+    synonyms_list = [s["synonymName"] for s in db.get_keyword_synonyms(keyword_id)]
+    
+    return jsonify({"total_piechart": total_piechart, "facebook_piechart": facebook_piechart, "instagram_piechart": instagram_piechart, "document_piechart": document_piechart, "single_linechart": single_linechart_data, "total_linechart": total_linechart_data, "synonyms": synonyms_list})
 
 
 @app.route("/archive")
