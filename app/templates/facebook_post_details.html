@@ -1,0 +1,37 @@
+{% extends "base_social_post_details.html" %}
+
+{% block social_post_details_title %}
+Facebook Post Details Page
+{% endblock %}
+
+{% block post_title %}
+Facebook
+{% endblock %}
+
+{% block post_reactions_piechart %}
+<div class="col-12 col-lg-6 p-0">
+    <div class="row">
+        <div class="col-12 px-4">
+            <h3 class="fw-bold">Reazioni</h3>
+        </div>
+    </div>
+    <div class="row mt-1 mx-2 border-start border-5 border-primary">
+        <!--legenda con i simbolini e i numeri-->
+        <div class="col-12 col-lg-5 bg-white">
+            legenda
+        </div>
+        <!--piechart-->
+        <div class="col-12 col-lg-5 bg-white">
+            piez
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block post_comments_piechart_legend %}
+legend
+{% endblock %}
+
+{% block post_comments_piechart %}
+pie
+{% endblock %}

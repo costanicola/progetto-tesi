@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% block social_post_details_title %}{% endblock %}
+{% endblock %}
+
+{% block main %}
+<div class="row justify-content-center m-0">
+    <div class="col-11 my-4">
+        <!--back-->
+        <div class="row mt-2">
+            <div class="col-lg-3 mb-3">
+                <button class="analysis-button back_button col-12 border shadow-sm p-0">
+                    <span class="bi bi-arrow-left-short"></span>
+                    <span class="analysis-buttons-text ms-1">Torna indietro</span>
+                </button>
+            </div>
+        </div>
+        <!--testo post-->
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="fw-bold fs-5">Post {% block post_title %}{% endblock %} del {{ post_info.pubblicationDatetime }}</h2>
+                    </div>
+                </div>
+                <div class="row px-2 mt-1">
+                    <div class="col-12 border-start border-5 border-primary bg-white py-2">
+                        {{ post_info.caption }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--parole chiave-->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="fw-bold">Parole chiave</h3>
+                    </div>
+                </div>
+                <div class="row px-2 mt-1">
+                    <div class="col-12 border-start border-5 border-primary">
+                        <ul class="d-flex flex-wrap p-0 m-0">
+                            {% for k in keywords_list %}
+                            <li class="list-group-item border-0 bg-white mx-1 my-2">
+                                {{ k.keywordName }}
+                            </li>
+                            {% else %}
+                            <li class="list-group-item border-0 fst-italic">Nessuna parola chiave trovata...</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--reazioni+pie e commenti+pie-->
+        <div class="row mt-4">
+            {% block post_reactions_piechart %}{% endblock %}
+            <div class="col-12 col-lg-6 p-0 mt-4 mt-lg-0">
+                <div class="row">
+                    <div class="col-12 px-4">
+                        <h3 class="fw-bold">Commenti</h3>
+                    </div>
+                </div>
+                <div class="row mt-1 mx-2 border-start border-5 border-primary">
+                    <!--legenda con i simbolini e i numeri-->
+                    <div class="col-12 col-lg-5 bg-white">
+                        {% block post_comments_piechart_legend %}{% endblock %}
+                    </div>
+                    <!--piechart-->
+                    <div class="col-12 col-lg-5 bg-white">
+                        {% block post_comments_piechart %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--lista commenti-->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="fw-bold">Lista commenti con le loro risposte</h3>
+                    </div>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item border-0 bg-transparent p-0 mt-3">
+                        <div class="comment-box d-inline-flex px-3 py-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12 d-flex">
+                                            <div class="flex-grow-1 fw-bold fst-italic align-self-center">
+                                                <p class="m-0">2022-08-12 22:00:09</p>
+                                            </div>
+                                            <div class="mx-3 align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="N° di Mi Piace al commento">
+                                                <img class="post-box-icon" src="{{ url_for('static', filename='images/fb_like.png') }}" alt="icona mi piace al commento" />
+                                                <span class="align-middle">12</span>
+                                            </div>
+                                            <div class="me-1 align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="N° di risposte al commento">
+                                                <span class="post-box-icon bi bi-chat align-middle"></span>
+                                                <span class="align-middle">2</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-12 d-flex">
+                                            <div class="align-self-center me-2">
+                                                <p class="m-0 fw-bold text-uppercase">neutrale</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <button>modifica</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-2">
+                                        <p class="m-0 lh-sm text-secondary">Twcmusumeci arinza arunza arinza arunza arinza arunza arinza arunza arinza arunza</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent p-0 ps-5 mt-2">
+                        <div class="comment-box d-inline-flex px-3 py-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12 d-flex">
+                                            <div class="flex-grow-1 fw-bold fst-italic align-self-center">
+                                                <p class="m-0">2022-08-12 22:00:09 (risposta)</p>
+                                            </div>
+                                            <div class="ms-3 me-1 align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="N° di Mi Piace al commento">
+                                                <img class="post-box-icon" src="{{ url_for('static', filename='images/fb_like.png') }}" alt="icona mi piace al commento" />
+                                                <span class="align-middle">12</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-12 d-flex">
+                                            <div class="align-self-center me-2">
+                                                <p class="m-0 fw-bold text-uppercase">neutrale</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <button>modifica</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-2">
+                                        <p class="m-0 lh-sm text-secondary">Twcmusumeci arinza arunza arinza arunza arinza arunza arinza arunza arinza arunza</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent p-0 mt-3">
+                        <div class="comment-box d-inline-flex px-3 py-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12 d-flex">
+                                            <div class="flex-grow-1 fw-bold fst-italic align-self-center">
+                                                <p class="m-0">2022-08-12 22:00:09</p>
+                                            </div>
+                                            <div class="mx-3 align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="N° di Mi Piace al commento">
+                                                <img class="post-box-icon" src="{{ url_for('static', filename='images/fb_like.png') }}" alt="icona mi piace al commento" />
+                                                <span class="align-middle">12</span>
+                                            </div>
+                                            <div class="me-1 align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="N° di risposte al commento">
+                                                <span class="post-box-icon bi bi-chat align-middle"></span>
+                                                <span class="align-middle">2</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-12 d-flex">
+                                            <div class="align-self-center me-2">
+                                                <p class="m-0 fw-bold text-uppercase">neutrale</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <button>modifica</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-2">
+                                        <p class="m-0 lh-sm text-secondary">Twcmusumeci arinza arunza arinza arunza arinza arunza arinza arunza arinza arunza</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

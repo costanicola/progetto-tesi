@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(to right, #e6f7ff, #ccccff, #f2e6ff);
+    background: /*linear-gradient(to right, #2D4772, #354661, #697485);*/linear-gradient(to right, #e6f7ff, #ccccff, #f2e6ff);
 }
 
 header {
@@ -109,6 +109,50 @@ h3 {
     font-size: 16px;
     color: black;
     position: sticky;
+}
+
+.social-info-box {
+    background: white;
+    font-size: 17px;
+    color: black;
+    border-radius: 6px;
+}
+
+.social-info-box .bi {
+    font-size: 20px;
+}
+
+.post-box {
+    width: 275px;
+    background: white;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+.post-box:hover {
+    background: whitesmoke;
+}
+
+.post-box-text {
+    height: 45px;
+}
+
+.post-box-icon {
+    height: 20px;
+    width: 20px;
+}
+
+.comment-box {
+    border: 1px solid black;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    background: white;
+    color: black;
+}
+
+.comment-box .bi {
+    font-size: 20px;
 }
 
 .archive-box-number {

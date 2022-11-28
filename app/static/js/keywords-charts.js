@@ -126,7 +126,7 @@ $(document).ready(function() {
 
                                                         <div class="col-12" id="keyword_${keywordId}_piechart"></div>
                     
-                                                        <div class="fst-italic text-secondary" id="keyword_${keywordId}_piechart_no_data_dispay">
+                                                        <div class="fst-italic text-secondary" id="keyword_${keywordId}_piechart_no_data_display">
                                                             Ancora nessun dato da visualizzare...
                                                         </div>
                                                     </div>
@@ -193,7 +193,7 @@ $(document).ready(function() {
 
                                                 <div class="col-12 p-0" id="keyword_${keywordId}_linechart"></div>
         
-                                                <div class="fst-italic text-secondary" id="keyword_${keywordId}_linechart_no_data_dispay">
+                                                <div class="fst-italic text-secondary" id="keyword_${keywordId}_linechart_no_data_display">
                                                     Ancora nessun dato da visualizzare...
                                                 </div>
                                             </div>
@@ -226,7 +226,7 @@ $(document).ready(function() {
                     </div>
                     <div class="row mt-1">
                         <div class="col">
-                            <a class="text-decoration-none text-secondary" href="#keyword_${keywordId}_modal" data-bs-toggle="modal" data-bs-target="#keyword_${keywordId}_modal" id="keyword_${keywordId}_detail_link">vedi dettagli ></a>
+                            <a class="text-decoration-none text-secondary" href="#keyword_${keywordId}_modal" data-bs-toggle="modal" data-bs-target="#keyword_${keywordId}_modal" id="keyword_${keywordId}_detail_link">vedi dettagli &raquo;</a>
                         </div>
                     </div>
                 </div>
@@ -287,6 +287,28 @@ $(document).ready(function() {
                         //legenda piechart
                         const pieLegendSvg = d3.select("#keyword_" + keywordId + "_piechart_legend").append("svg").attr("width", 275).attr("height", 30).append("g").attr("transform", "translate(0,0)").attr("id", "keyword_" + keywordId + "_piechart_legend_g");
 
+                        //tooltip ed eventi del grafico
+                        const darsenaPieTooltip = d3.select("#darsena_piechart").append("div")
+                        .style("opacity", 0).attr("class", "tooltip").style("background-color", "white")
+                        .style("border", "solid").style("border-width", "2px").style("border-radius", "5px").style("padding", "5px");
+
+                        const darsenaPieMouseover = function(d) {
+                            $(".tooltip").show();
+                            darsenaPieTooltip.style("opacity", 1);
+                            d3.select(this).style("opacity", 1);
+                        };
+                        
+                        const darsenaPieMousemove = function(d) {
+                            darsenaPieTooltip.html("N° analisi con risultato " + d.data.key + ": " + d.value + " (<span class='fw-bold'>" + d3.format(".0%")(d.value / darsenaPieDataTotal) + "</span>)")
+                            .style("left", d3.event.pageX - 130 + "px").style("top", d3.event.pageY - 45 + "px");
+                        };
+                        
+                        const darsenaPieMouseleave = function(d) {
+                            $(".tooltip").hide();
+                            darsenaPieTooltip.style("opacity", 0);
+                            d3.select(this).style("opacity", 0.8);
+                        };
+
                         updatePie(getPieSelectedData());
 
                         $("#keyword_" + keywordId + "_piechart_selector").change(function() {
@@ -301,13 +323,13 @@ $(document).ready(function() {
 
                         function updatePie(data) {
                             $("#keyword_" + keywordId + "_piechart, #keyword_" + keywordId + "_piechart_legend").show();
-                            $("#keyword_" + keywordId + "_piechart_no_data_dispay").show();
+                            $("#keyword_" + keywordId + "_piechart_no_data_display").show();
 
                             if (data != null) {
                                 const totalPieDataTotal = d3.sum(d3.values(data));
 
                                 if (totalPieDataTotal != 0) {
-                                    $("#keyword_" + keywordId + "_piechart_no_data_dispay").hide();
+                                    $("#keyword_" + keywordId + "_piechart_no_data_display").hide();
                                     $("#keyword_" + keywordId + "_pie_g").children().remove();
                                     $("#keyword_" + keywordId + "_piechart_legend_g").children().remove();
 
@@ -394,10 +416,10 @@ $(document).ready(function() {
 
                         function updateLine(selectedData) {
                             $("#keyword_" + keywordId + "_linechart, #keyword_" + keywordId + "_linechart_legend").show();
-                            $("#keyword_" + keywordId + "_linechart_no_data_dispay").show();
+                            $("#keyword_" + keywordId + "_linechart_no_data_display").show();
 
                             if (totalLineData.length > 1) {
-                                $("#keyword_" + keywordId + "_linechart_no_data_dispay").hide();
+                                $("#keyword_" + keywordId + "_linechart_no_data_display").hide();
                                 $("#keyword_" + keywordId + "_line_g").children().remove();
                                 $("#keyword_" + keywordId + "_linechart_legend_g").children().remove();
 

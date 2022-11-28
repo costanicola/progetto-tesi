@@ -6,12 +6,138 @@ Dashboard Social Networks
 
 {% block main %}
 <div class="row justify-content-center m-0">
-    <div class="col-10 my-4">
-        <div class="row">
-            <button id="refresh_social_infos">Aggiorna</button>
+    <div class="col-12 p-0">
+        <p class="upper-advisor m-0 py-2 px-3 text-center">
+            Informazioni prelevate dal <span class="fw-bold">2020-07-01</span> al <span class="fw-bold">2022-09-29 (ultimo aggiornamento)</span>.
+        </p>
+    </div>
+    <div class="col-11 my-4">
+        <div class="row justify-content-center">
+            <!--statistiche-->
+            <div class="social-info-box col-12 col-sm-10 col-md-9 col-lg mt-lg-4 border shadow-sm">
+                <div class="row my-3">
+                    <div class="col-12">
+                        <div class="row mb-1">
+                            <div class="col-12 mx-2">
+                                <p class="m-0 fw-bold"><span class="me-2 bi bi-image"></span>N° POST SALVATI</p>
+                            </div>
+                        </div>
+                        <div class="row mx-4">
+                            <div class="col-8">
+                                Facebook:
+                            </div>
+                            <div class="col-4 text-end text-md-start text-lg-end">
+                                {{ post_f }}
+                            </div>
+                        </div>
+                        <div class="row mx-4">
+                            <div class="col-8">
+                                Instagram:
+                            </div>
+                            <div class="col-4 text-end text-md-start text-lg-end">
+                                {{ post_i }}
+                            </div>
+                        </div>
+                        <hr class="my-3 mx-2" />
+                    </div>
+                    <div class="col-12">
+                        <div class="row mb-1">
+                            <div class="col-12  mx-2">
+                                <p class="m-0 fw-bold"><span class="me-2 bi bi-chat"></span>N° COMMENTI SALVATI</p>
+                            </div>
+                        </div>
+                        <div class="row mx-4">
+                            <div class="col-8">
+                                Facebook:
+                            </div>
+                            <div class="col-4 text-end text-md-start text-lg-end">
+                                {{ comment_f }}
+                            </div>
+                        </div>
+                        <div class="row mx-4">
+                            <div class="col-8">
+                                Instagram:
+                            </div>
+                            <div class="col-4 text-end text-md-start text-lg-end">
+                                {{ comment_i }}
+                            </div>
+                        </div>
+                        <hr class="my mx-2" />
+                    </div>
+                    <div class="col-12">
+                        <div class="row mb-1">
+                            <div class="col-12  mx-2">
+                                <p class="m-0 fw-bold"><span class="me-2 bi bi-calendar3"></span>TIMESTAMP ULTIMO POST SALVATO</p>
+                            </div>
+                        </div>
+                        <div class="row mx-4">
+                            <div class="col-4">
+                                Facebook:
+                            </div>
+                            <div class="col-8 text-end">
+                                {{ datetime_f }}
+                            </div>
+                        </div>
+                        <div class="row mx-4">
+                            <div class="col-4">
+                                Instagram:
+                            </div>
+                            <div class="col-8 text-end">
+                                {{ datetime_i }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--grafico pie-->
+            <div class="col-12 col-lg mt-4 mt-lg-4">
+                <div class="graph-area border shadow-sm text-center">
+                    <div class="row">
+                        <p class="m-0 pt-2 px-4 fw-bold">Mood complessivo commenti dei social</p>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-12" id="social_piechart_legend"></div>
+
+                        <div class="col-12" id="social_piechart"></div>
+
+                        <div class="fst-italic text-secondary" id="social_piechart_no_data_display">
+                            Ancora nessun dato da visualizzare...
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--grafico bar-->
+            <div class="col-12 col-lg mt-4 mt-lg-4">
+                <div class="graph-area border shadow-sm text-center">
+                    <div class="row">
+                        <p class="m-0 pt-2 px-4 fw-bold">N° parole chiave trovate nei social</p>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-12" id="social_barchart_legend"></div>
+
+                        <div class="col-12" id="social_barchart"></div>
+
+                        <div class="fst-italic text-secondary" id="social_barchart_no_data_display">
+                            Ancora nessun dato da visualizzare...
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row">
-            ciao
+        <!--bottoni social-->
+        <div class="row justify-content-evenly mt-0 mt-lg-5">
+            <div class="col-10 col-lg-4 mt-5 mt-lg-0">
+                <a class="btn analysis-button col-12 border shadow-sm p-0" href="{{ url_for('dashboard_facebook_page') }}">
+                    <span class="bi bi-facebook"></span>
+                    <span class="analysis-buttons-text ms-3 fw-bold">Dashboard Facebook</span>
+                </a>
+            </div>
+            <div class="col-10 col-lg-4 mt-4 mt-lg-0">
+                <a class="btn analysis-button col-12 border shadow-sm p-0" href="{{ url_for('dashboard_instagram_page') }}">
+                    <span class="bi bi-instagram"></span>
+                    <span class="analysis-buttons-text ms-3 fw-bold">Dashboard Instagram</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>

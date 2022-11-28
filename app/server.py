@@ -8,7 +8,7 @@ import os
 from flask import Flask, render_template, request
 from flask.json import jsonify
 import threading
-from database import DB
+import database as db
 import social_api as api
 #from sentiment_analyzer import Sentiment, Emotion
 import text_handler as th
@@ -20,11 +20,9 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.config["UPLOAD_FOLDER"] = "./static/upload/"
 
-db = DB()
-db.connect_db()
-
 #sentiment_analyzer = Sentiment()
 #emotion_analyzer = Emotion()
+
 
 
 def handle_social_comment_analysis(comment):
@@ -119,7 +117,30 @@ def dashboard_darsena_page():
 
 @app.route("/dashboard-social")
 def dashboard_social_page():
-    return render_template("dashboard_social.html")
+    return render_template("dashboard_social.html", post_f=db.get_social_posts_count("facebook"), post_i=db.get_social_posts_count("instagram"), 
+                           comment_f=db.get_social_comments_count("facebook"), comment_i=db.get_social_comments_count("instagram"),
+                           datetime_f=db.get_social_last_post_date("facebook"), datetime_i=db.get_social_last_post_date("instagram"))
+
+
+@app.route("/dashboard-social/facebook")
+def dashboard_facebook_page():
+    return render_template("dashboard_social_facebook.html", fb_posts_list=db.get_all_social_posts_preview("facebook"))
+
+
+@app.route("/dashboard-social/instagram")
+def dashboard_instagram_page():
+    return render_template("dashboard_social_instagram.html", ig_posts_list=db.get_all_social_posts_preview("instagram"))
+
+
+@app.route("/dashboard-social/facebook/<post_id>")
+def facebook_post_details_page(post_id):
+    print(db.get_post_comments_keywords(post_id))
+    return render_template("facebook_post_details.html", post_info=db.get_post_details(post_id), keywords_list=db.get_post_comments_keywords(post_id))
+
+
+@app.route("/dashboard-social/instagram/<post_id>")
+def instagram_post_details_page(post_id):
+    return render_template("instagram_post_details.html", post_info=db.get_post_details(post_id), keywords_list=db.get_post_comments_keywords(post_id))
 
 
 @app.route("/dashboard-keywords")
@@ -156,10 +177,16 @@ def dashboard_keywords_charts_modal(keyword_id):
 @app.route("/archive")
 def archive_page():
     
-    tot_doc = 105
-    tot_pos = 34
-    tot_neu = 61
-    tot_neg = 10
+    tot_pos, tot_neu, tot_neg = 0, 0, 0
+    for r in db.get_documents_sentiment_quantities():
+        if r["sentiment"] == "positivo":
+            tot_pos = r["n"]
+        elif r["sentiment"] == "neutrale":
+            tot_neu = r["n"]
+        else:
+            tot_neg = r["n"]
+    
+    tot_doc = tot_pos + tot_neu + tot_neg
     
     return render_template("archive.html", total_documents=tot_doc, total_positive=tot_pos, total_neutral=tot_neu, total_negative=tot_neg)
 
