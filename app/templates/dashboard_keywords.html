@@ -5,8 +5,6 @@ Dashboard Keywords
 {% endblock %}
 
 {% block file %}
-<!-- JSON5 (https://github.com/json5/json5) consente l'uso dell'apice singolo per indicare una stringa in json -->
-<script src="https://unpkg.com/json5@2/dist/index.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
 <script src="{{ url_for('static', filename='js/keywords-charts.js') }}"></script>
 {% endblock %}
@@ -15,7 +13,7 @@ Dashboard Keywords
 <div class="modal fade" id="new_keyword_modal" tabindex="-1" aria-labelledby="new_title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border">
-            <div class="row justify-content-center">
+            <form class="row justify-content-center" action="{{ url_for('add_keyword') }}" method="POST" id="add_keyword_form">
                 <div class="col-10 p-0">
                     <div class="row mt-3">
                         <div class="col-12">
@@ -60,7 +58,7 @@ Dashboard Keywords
                                     <input type="text" class="form-control" id="keyword_similar" name="keyword_similar" placeholder="Nome sinonimo" />
                                 </div>
                                 <div class="col-1 p-0">
-                                    <button class="bg-transparent border-0" id="add_keyword_similar_button">
+                                    <button type="button" class="bg-transparent border-0" id="add_keyword_similar_button">
                                         <span class="add_keyword_similar_button_icon bi bi-plus-circle"></span>
                                     </button>
                                 </div>
@@ -69,18 +67,19 @@ Dashboard Keywords
                     </div>
                     <div class="row mt-3">
                         <div class="col-12">
-                            <ul class="list-group p-0" id="similar_keyword_list">
+                            <ul class="list-group p-0" id="similar_keywords_list">
                             </ul>
+                            <input type="hidden" id="similar_keywords_list_hidden" name="similar_keywords" value="" />
                         </div>
                     </div>
                     <div class="row my-4">
                         <div class="col-12 text-end">
-                            <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
-                            <button class="btn btn-primary">Salva e aggiungi</button>
+                            <button type="button" class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                            <input type="submit" class="btn btn-primary" value="Salva e aggiungi" id="add_new_keywords_button" />
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -111,7 +110,7 @@ Dashboard Keywords
                     <div class="row my-4">
                         <div class="col-12 text-end">
                             <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
-                            <button class="btn btn-primary">Applica</button>
+                            <button class="btn btn-primary" id="keywords_filter_category_button">Applica</button>
                         </div>
                     </div>
                 </div>
@@ -122,21 +121,13 @@ Dashboard Keywords
 
 <div class="row justify-content-center mx-0 my-3">
     <div class="col-11">
-        <!--filtri-->
-        <div class="row">
-            <div class="col-12 text-end p-0 d-flex justify-content-end">
-                <button class="col-lg-2 col-12 analysis-button border shadow-sm text-uppercase p-2" type="button" data-bs-toggle="modal" data-bs-target="#keyword_filter_modal" id="keyword_filter_button">
-                    filtra visualizzazione
-                </button>
-            </div>
-        </div>
         <!--wordcloud-->
         <div class="row mt-3">
             <div class="col-12">
                 <div class="row graph-area border shadow-sm text-center">
                     <div class="col-12">
                         <div class="row">
-                            <p class="mt-2 mb-0 fw-bold fs-5">Wordcloud delle parole chiave</p>
+                            <h2 class="mt-2 mb-0 fw-bold fs-5">Wordcloud delle parole chiave</h2>
                         </div>
                         <div class="row">
                             <div data="{{ keywords_infos }}" id="keywords_wordcloud"></div>
@@ -145,17 +136,25 @@ Dashboard Keywords
                 </div>
             </div>
         </div>
+        <!--filtro-->
+        <div class="row mt-3">
+            <div class="col-12 text-end p-0 d-flex justify-content-end">
+                <button class="col-lg-2 col-12 analysis-button border shadow-sm p-2" type="button" data-bs-toggle="modal" data-bs-target="#keyword_filter_modal" id="keyword_filter_button">
+                    FILTRA CATEGORIE
+                </button>
+            </div>
+        </div>
         <!--lista parole suddivise per categoria-->
         <div class="row mt-3">
             <div class="col-12">
                 <div class="row graph-area border shadow-sm">
-                    <div class="col-12">
+                    <div class="col-12" id="keywords_list_div">
                         <div class="row">
-                            <p class="mt-2 mb-0 fw-bold text-center fs-5">Parole chiave</p>
+                            <h2 class="mt-2 mb-0 fw-bold text-center fs-5">Parole chiave</h2>
                         </div>
                         {% for cat_id, cat_name in attendances_categories_infos %}
                         <div class="row">
-                            <p class="mt-3 mb-0 fw-bold text-center text-decoration-underline text-uppercase">{{ cat_name }}</p>
+                            <h3 class="mt-3 mb-0 fw-bold text-center text-decoration-underline text-uppercase">{{ cat_name }}</h3>
                         </div>
                         <div class="row row-cols-auto flex-row justify-content-center flex-wrap m-3" id="keywords_list_cat{{ cat_id }}"></div>
                         {% else %}

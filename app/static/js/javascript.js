@@ -71,6 +71,51 @@ $(document).ready(function() {
         $(this).css("background", "none");
     });
 
+    // EVENTI ARCHIVE.HTML
+
+    //ordinamento
+    $("#sort_documents").change(function() {
+        const documentsList = $(".documents-list li");
+        const orderedListIds = [];
+
+        for (let i = 0; i < documentsList.length; i++) {
+            orderedListIds.push(parseInt(documentsList.eq(i).attr("id").match(/\d+/)[0]));
+        }
+
+        $("#sort_documents option:selected").val() == "asc" ? orderedListIds.sort() : orderedListIds.reverse();
+        $(".documents-list li").remove();
+
+        for (let i = 0; i < documentsList.length; i++) {
+            $(".documents-list").append(documentsList.filter("#document_li_" + orderedListIds[i]));
+        }
+
+    });
+
+    //filtro
+    $("#filter_documents").change(function() {
+        const documentsList = $(".documents-list li").show();
+        const filter = $("#filter_documents option:selected").val();
+
+
+        if (filter == "positivo" || filter == "neutrale" || filter == "negativo") {
+
+            for (let i = 0; i < documentsList.length; i++) {
+                $(".documents-list li:eq(" + i + ")").not(function() {
+                    return $(".documents-list li:eq(" + i + ") span").text().includes(filter);
+                }).hide();
+            }
+
+        } else if (filter != "no") {
+            
+            for (let i = 0; i < documentsList.length; i++) {
+                $(".documents-list li:eq(" + i + ")").not(function() {
+                    return $(".documents-list li:eq(" + i + ")").attr("user") == filter;
+                }).hide();
+            }
+
+        }
+    });
+
     // EVENTI DOCUMENT_ANALYSIS_DETAILS.HTML
     $(".bi-clipboard-check").hide();
 
@@ -81,7 +126,7 @@ $(document).ready(function() {
 
         let copiedText = "";
         $("#document_text>li>p").each(function() {
-            copiedText = [copiedText, $(this).text()].join(copiedText == "" ? "" : "\n\n");
+            copiedText = [copiedText, $.trim($(this).text())].join(copiedText == "" ? "" : "\n\n");
         });
         navigator.clipboard.writeText(copiedText);
 
@@ -104,14 +149,14 @@ $(document).ready(function() {
 
             if (!similarKeywords.has(word)) {
 
-                $("#similar_keyword_list").prepend(`
+                $("#similar_keywords_list").prepend(`
                     <li class="list-group-item border-0 p-0" id="${wordId}_li">
                         <div class="row border-0 mx-3 border-bottom">
                             <div class="col-10 d-flex align-items-center">
                                 ${word}
                             </div>
                             <div class="col-2 d-flex align-items-center">
-                                <button class="bg-transparent border-0" id="${wordId}_x_button">
+                                <button type="button" class="bg-transparent border-0" id="${wordId}_x_button">
                                     <span class="add_keyword_similar_button_icon bi bi-x"></span>
                                 </button>
                             </div>
@@ -129,6 +174,60 @@ $(document).ready(function() {
 
             similarKeywords.add(word);
         }
+    });
+
+    //controllo che nome della keyword da aggiungere non sia vuoto
+    $("#add_new_keywords_button").click(function(event) {
+        if (!$.trim($("#keyword_name").val())) {
+            event.preventDefault();
+        }
+    });
+
+    //da <li> a JSON a stringa nel input hidden 
+    $("#add_keyword_form").submit(function(event) {
+        let keywords_list = {};
+        $("#add_keyword_form ul li").each(function(i) {
+            keywords_list[i] = $.trim($(this).text());
+        });
+        $("#similar_keywords_list_hidden").val(JSON5.stringify(keywords_list));
+    });
+
+    //evento bottone filtro categorie
+    $("#keywords_filter_category_button").click(function() {
+        $("#keyword_filter_modal").modal("hide");
+        $("#keywords_list_div > div:first ~ div").hide().last().show();
+
+        $("#keyword_filter_modal input[role='switch']:checked").each(function() {
+            $("#keywords_list_div > div").filter("#keywords_list_cat" + $(this).attr("name").match(/\d+/)[0]).show();  //con questo match prelevo l'id della categoria
+            $("#keywords_list_div > div").filter("#keywords_list_cat" + $(this).attr("name").match(/\d+/)[0]).prev().show();
+        });
+
+    });
+
+    // EVENTI BASE_SOCIAL_POST_DETAILS.HTML
+    $(".comment_modify_sentiment_button").click(function() {
+        const commentId = $(this).attr("comment-id");
+        const url = $(this).attr("url");
+        const newSentiment = $("#comment_sentiment_selector_" + commentId + " option:selected").text();
+        
+        //se si ha modificato il sentiment (prendo il sentiment originale e lo confronto con quello selezionato nel <select>)
+        if ($("#sentiment_" + commentId).text() != newSentiment) {
+            
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    comment_id: commentId,
+                    new_sentiment: newSentiment
+                },
+                success: function(response) {
+                    $("#sentiment_" + commentId).text(response["sentiment"]);
+                    $("#modify_comment_sentiment_modal_" + commentId).modal("hide");
+                }
+            });
+
+        }
+        
     });
 
     // EVENTI DASHBOARD_SOCIAL.HTML

@@ -188,8 +188,11 @@ h3 {
 
 .tooltip-inner {
     background-color: #2f4fff;
-    opacity: 1 !important;
     font-size: 16px;
+}
+
+.tooltip.show {
+    opacity: 1 !important;
 }
 
 .tooltip.bs-tooltip-bottom .tooltip-arrow::before {
@@ -242,4 +245,18 @@ h3 {
 
 .add_keyword_similar_button_icon {
     font-size: 24px;
+}
+
+.modify-comment-sentiment {
+    font-size: 14px;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding-bottom: 2px;
+    background: whitesmoke;
+}
+
+.modify-comment-sentiment:hover {
+    color: white;
+    background: black;
 }

@@ -5,7 +5,7 @@ Created on Thu Sep 22 08:32:53 2022
 """
 
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask.json import jsonify
 import threading
 import database as db
@@ -14,6 +14,8 @@ import social_api as api
 import text_handler as th
 import file_handler as fh
 from datetime import datetime
+import json
+import ast
 
 
 app = Flask(__name__)
@@ -110,7 +112,7 @@ def activities_log_page():
 @app.route("/dashboard-darsena")
 def dashboard_darsena_page():
     
-    data_pie = [{"sentiment": "positivo", "numero": 10}, {"sentiment": "neutrale", "numero": 10}, {"sentiment": "negativo", "numero": 10}]
+    data_pie = [{"sentiment": "positivo", "numero": 0}, {"sentiment": "neutrale", "numero": 0}, {"sentiment": "negativo", "numero": 0}]
     
     return render_template("dashboard_darsena.html", darsena_piechart_data=data_pie)
 
@@ -119,7 +121,8 @@ def dashboard_darsena_page():
 def dashboard_social_page():
     return render_template("dashboard_social.html", post_f=db.get_social_posts_count("facebook"), post_i=db.get_social_posts_count("instagram"), 
                            comment_f=db.get_social_comments_count("facebook"), comment_i=db.get_social_comments_count("instagram"),
-                           datetime_f=db.get_social_last_post_date("facebook"), datetime_i=db.get_social_last_post_date("instagram"))
+                           datetime_f=db.get_social_last_post_date("facebook"), datetime_i=db.get_social_last_post_date("instagram"),
+                           keywords_barplot=db.get_socials_keywords_count(), total_piechart=db.get_social_comments_sentiment_total())
 
 
 @app.route("/dashboard-social/facebook")
@@ -134,13 +137,23 @@ def dashboard_instagram_page():
 
 @app.route("/dashboard-social/facebook/<post_id>")
 def facebook_post_details_page(post_id):
-    print(db.get_post_comments_keywords(post_id))
-    return render_template("facebook_post_details.html", post_info=db.get_post_details(post_id), keywords_list=db.get_post_comments_keywords(post_id))
+    return render_template("facebook_post_details.html", post_info=db.get_post_details(post_id), keywords_list=db.get_post_comments_keywords(post_id),
+                           comments_info=db.get_post_comments_details(post_id), replies_info=db.get_post_comments_replies_details(post_id))
 
 
 @app.route("/dashboard-social/instagram/<post_id>")
 def instagram_post_details_page(post_id):
     return render_template("instagram_post_details.html", post_info=db.get_post_details(post_id), keywords_list=db.get_post_comments_keywords(post_id))
+
+
+@app.route("/dashboard-social/modify-comment", methods=["POST"])
+def modify_comment_sentiment():
+    
+    comment_id = request.form["comment_id"]
+    new_sentiment = request.form["new_sentiment"]
+    updated_analysis = db.update_comment_sentiment(comment_id, new_sentiment)
+    
+    return jsonify({"sentiment": updated_analysis["sentiment"], "date": updated_analysis["sentimentUpdateDate"]})
 
 
 @app.route("/dashboard-keywords")
@@ -151,6 +164,20 @@ def dashboard_keywords_page():
     attendances_categories = {q["categoryId"]: q["categoryName"] for q in keywords_sentiment_quantities}.items()
     
     return render_template("dashboard_keywords.html", keywords_infos=keywords_sentiment_quantities, categories_infos=all_categories, attendances_categories_infos=attendances_categories)
+
+
+@app.route("/dashboard-keywords", methods=["POST"])
+def add_keyword():
+    
+    selected_category = request.form["keyword_category_selector"].split("value_cat")[1]
+    keyword_name = request.form["keyword_name"]
+    similars = ast.literal_eval(request.form["similar_keywords"])  #se vuoto: {} altrimenti: {'0': 'sim1', '1': 'sim2'}
+    
+    keyword_id = db.insert_new_keyword(keyword_name, selected_category)
+    for s in similars.values():
+        db.insert_keyword_synonym(keyword_id, s)
+    
+    return redirect(url_for("dashboard_keywords_page"))
 
 
 @app.route("/dashboard-keywords/keyword-<keyword_id>", methods=["POST"])
@@ -185,15 +212,16 @@ def archive_page():
             tot_neu = r["n"]
         else:
             tot_neg = r["n"]
+    tot_doc = tot_pos + tot_neu + tot_neg                     # !!! ATTENZIONE qui sotto da mettere la session dell'utente !!!
     
-    tot_doc = tot_pos + tot_neu + tot_neg
-    
-    return render_template("archive.html", total_documents=tot_doc, total_positive=tot_pos, total_neutral=tot_neu, total_negative=tot_neg)
+    return render_template("archive.html", documents_list=db.get_documents_preview(), user_id=1, total_documents=tot_doc, 
+                           total_positive=tot_pos, total_neutral=tot_neu, total_negative=tot_neg)
 
 
-@app.route("/archive/document")
-def document_details_page():
-    return render_template("document_analysis_details.html")
+@app.route("/archive/document/<int:analysis_id>")
+def document_details_page(analysis_id):
+    return render_template("document_analysis_details.html", document_info=db.get_document_details(analysis_id), 
+                           keywords_list=db.get_document_keywords(analysis_id), paragraphs_info=db.get_document_paragraphs_details(analysis_id))
 
 
 @app.route("/analysis")
@@ -261,10 +289,10 @@ def document_analysis():
     #                 text_emotions[phr_emot].append(phr_score)
     #             emot = max(text_emotions, key=text_emotions.get)
             
-    #         analysis_id = db.insert_text_analysis(language, general_sent, general_score, emot)
+    #         analysis_id = db.insert_text_analysis("italiano", general_sent, general_score, emot)
     #         general_emotion = emot
     #     else:
-    #         analysis_id = db.insert_text_analysis(language, general_sent, general_score)
+    #         analysis_id = db.insert_text_analysis("italiano", general_sent, general_score)
     #         general_emotion = None
         
     #     general_sentiment = general_sent
@@ -317,10 +345,10 @@ def document_analysis():
     #                 text_emotions[phr_emot].append(phr_score)
     #             emot = max(text_emotions, key=text_emotions.get)
             
-    #         analysis_id = db.insert_text_analysis(language, general_sent, general_score, emot)
+    #         analysis_id = db.insert_text_analysis("inglese", general_sent, general_score, emot)
     #         general_emotion = emot
     #     else:
-    #         analysis_id = db.insert_text_analysis(language, general_sent, general_score)
+    #         analysis_id = db.insert_text_analysis("inglese", general_sent, general_score)
     #         general_emotion = None
         
     #     # ricerca parole

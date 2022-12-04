@@ -7,31 +7,31 @@ Archive Page
 {% block main %}
 <div class="row justify-content-center m-0">
     <div class="col-10 col-lg-3 order-lg-last mt-3">
-        <div class="row sticky-top">
-            <div class="box col-12 border rounded shadow-sm">
+        <div class="row">
+            <div class="box col-12 border rounded shadow-sm mt-1">
                 <!--qui le opzioni-->
                 <div class="row my-3 align-items-center">
                     <div class="col text-center pe-0">
-                        <label for="filter" class="form-label m-0">Filtra:</label>
+                        <label for="filter_documents" class="form-label m-0">Filtra:</label>
                     </div>
                     <div class="col-9 ps-0">
-                        <select name="filter" id="filter" class="form-select">
+                        <select name="filter_documents" id="filter_documents" class="form-select">
                             <option value="no">--nessun filtro--</option>
-                            <option value="pos">solo positivi</option>
-                            <option value="neu">solo neutrali</option>
-                            <option value="neg">solo negativi</option>
-                            <option value="you">solo aggiunti da te</option>
+                            <option value="positivo">solo positivi</option>
+                            <option value="neutrale">solo neutrali</option>
+                            <option value="negativo">solo negativi</option>
+                            <option value="{{ user_id }}">solo aggiunti da te</option>
                         </select>
                     </div>
                 </div>
                 <div class="row my-3 align-items-center">
                     <div class="col text-center p-0">
-                        <label for="sort" class="form-label m-0">Ordina:</label>
+                        <label for="sort_documents" class="form-label m-0">Ordina:</label>
                     </div>
                     <div class="col-9 ps-0">
-                        <select name="sort" id="sort" class="form-select">
-                            <option value="date_desc">pi&ugrave; recente</option>
-                            <option value="date_asc">meno recente</option>
+                        <select name="sort_documents" id="sort_documents" class="form-select">
+                            <option value="desc">pi&ugrave; recente</option>
+                            <option value="asc">meno recente</option>
                         </select>
                     </div>
                 </div>
@@ -81,16 +81,18 @@ Archive Page
     <div class="col-10 col-lg-7 order-lg-first mt-3 me-lg-4">
         <!--qui la lista di doc-->
         <ul class="documents-list list-group">
-            <li class="list-group-item my-1 py-2 border-0">
-                <span class="mx-4 me-sm-4 ms-sm-0">12/04/2022</span>
-                <span class="text-uppercase fw-bold mx-3 me-sm-4 ms-sm-0">positivo</span>
-                <div class="text-truncate col-xl-8 col-lg-7 col-md-7 col-sm-5 d-none d-sm-inline-block align-text-bottom">
-                    Ciao io cscsdscdd dscdsc cdc csdc cc c csdcs cs cc dscd cds cdcsdsc dscsono nicola costa owncd dd wecoiewonc cen ewnci cds cddc cccnwe niceoiniencwetbreb ervev
-                </div>
-                <a class="stretched-link float-end me-1" href="{{ url_for('document_details_page') }}">
+            {% for d in documents_list %}
+            <li class="list-group-item my-1 py-2 border-0" id="document_li_{{ d.analysisId }}" user="{{ d.userK }}">
+                <span class="mx-4 me-sm-4 ms-sm-0">{{ d.analysisAddedDate }}</span>
+                <span class="text-uppercase fw-bold mx-3 me-sm-4 ms-sm-0">{{ d.sentiment }}</span>
+                <div class="text-truncate col-xl-8 col-lg-7 col-md-7 col-sm-5 d-none d-sm-inline-block align-text-bottom">{{ d.content }}</div>
+                <a class="stretched-link float-end me-1" href="{{ url_for('document_details_page', analysis_id=d.analysisId) }}">
                     <span class="bi bi-info-circle"></span>
                 </a>
             </li>
+            {% else %}
+            <li class="list-group-item my-1 py-2 border-0 text-secondary fst-italic text-center">Nessun documento relativo alla Darsena salvato...</li>
+            {% endfor %}
         </ul>
     </div>
 </div>

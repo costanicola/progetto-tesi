@@ -23,11 +23,12 @@ $(document).ready(function() {
         let sum = d.npos + d.nneu + d.nneg;
         wordcloudTooltip.html(`
             <div class="text-uppercase fw-bold fs-5 mx-2">${d.text}</div>
+            <div class="text-secondary mx-2">${d.cat}</div>
             <div class="my-1 mx-2">Totale occorrenze nelle analisi: <span class="fw-bold">${sum}</span></div>
             <ul class="mb-1">
-                <li>Di cui positive: <span class="fw-bold">${d.npos} (${sum !== 0 ? d3.format(".0%")(d.npos / sum) : 0})</span></li>
-                <li>Di cui neutrali: <span class="fw-bold">${d.nneu} (${sum !== 0 ? d3.format(".0%")(d.nneu / sum) : 0})</span></li>
-                <li>Di cui negative: <span class="fw-bold">${d.nneg} (${sum !== 0 ? d3.format(".0%")(d.nneg / sum) : 0})</span></li>
+                <li>Di cui positive: <span class="fw-bold">${d.npos} ${sum !== 0 ? "(" + d3.format(".0%")(d.npos / sum) + ")" : ""}</span></li>
+                <li>Di cui neutrali: <span class="fw-bold">${d.nneu} ${sum !== 0 ? "(" + d3.format(".0%")(d.nneu / sum) + ")" : ""}</span></li>
+                <li>Di cui negative: <span class="fw-bold">${d.nneg} ${sum !== 0 ? "(" + d3.format(".0%")(d.nneg / sum) + ")" : ""}</span></li>
             </ul>
         `).style("left", d3.event.pageX + 75 + "px").style("top", d3.event.pageY - 75 + "px");
     };
@@ -55,7 +56,7 @@ $(document).ready(function() {
 
         const wordcloudLayout = d3.layout.cloud().size([currentWidth, currentHeight])
         .words(keywordData.map(function(d) {
-            return {text: d.keywordName, size: (d.totalPositives + d.totalNeutrals + d.totalNegatives), npos: d.totalPositives, nneu: d.totalNeutrals, nneg: d.totalNegatives};
+            return {text: d.keywordName, cat: d.categoryName, size: (d.totalPositives + d.totalNeutrals + d.totalNegatives), npos: d.totalPositives, nneu: d.totalNeutrals, nneg: d.totalNegatives};
         }))
         .padding(25).spiral("rectangular").rotate(0).fontSize(d => wordcloudScaleValue(d.size)).on("end", drawWordcloud);
 

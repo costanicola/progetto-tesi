@@ -63,3 +63,51 @@ class LineChart {
     }
 
 }
+
+/*class BarPlot {
+
+    constructor(data, colorRange, svgPosition) {
+
+        this.data = data;
+        this.color = d3.scaleOrdinal().domain(data).range(colorRange);
+        this.barSvg = d3.select(svgPosition).append("svg").append("g");
+        this.svg = d3.select(svgPosition + " svg");
+        this.g = d3.select(svgPosition + " svg g");
+
+    }
+
+    drawLineChart(height, width, margins) {
+        
+        this.svg.attr("width", width + margins.left + margins.right).attr("height", height + margins.top + margins.bottom);
+        this.g.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+
+        const xAxis = d3.scaleBand().range([0, width]).domain(this.data.map(d => d.social))
+        .padding(0.2);
+        svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+        .domain([0, 100])
+        .range([ height, 0]);
+        svg.append("g")
+        .call(d3.axisLeft(y));
+
+        // Bars
+        svg.selectAll("mybar")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return x(d.social); })
+        .attr("y", function(d) { return y(d.nKeywords); })
+        .attr("width", x.bandwidth())
+        .attr("height", function(d) { return height - y(d.nKeywords); })
+        .attr("fill", "#69b3a2")
+
+    }
+
+}*/

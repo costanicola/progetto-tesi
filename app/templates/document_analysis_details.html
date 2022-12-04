@@ -125,40 +125,50 @@ Analysis Details Page
                                         Sentiment Analysis
                                     </div>
                                     <div class="col text-end align-self-center fw-bold text-uppercase">
-                                        negativo
+                                        {{ document_info.sentiment }}
                                     </div>
                                 </div>
+                                {% if document_info.sentimentUpdateDate %}
                                 <div class="row">
                                     <div class="col-12 text-end">
-                                        <span class="text-modified text-muted">modificato in data 2022-11-09</span>
+                                        <span class="text-modified text-muted">
+                                            modificato in data {{ document_info.sentimentUpdateDate }}
+                                        </span>
                                     </div>
                                 </div>
+                                {% endif %}
                             </li>
+                            {% if not document_info.sentimentUpdateDate %}
                             <li class="list-group-item">
                                 <div class="row justify-content-between">
                                     <div class="col align-self-center">
                                         Intensit&agrave; Sentiment
                                     </div>
                                     <div class="col text-end align-self-center">
-                                        52%
+                                        {{ document_info.sentimentIntensity }}%
                                     </div>
                                 </div>
                             </li>
+                            {% endif %}
+                            {% if document_info.emotion %}
                             <li class="list-group-item">
                                 <div class="row justify-content-between">
                                     <div class="col align-self-center">
                                         Emozione rilevata
                                     </div>
-                                    <div class="col text-end align-self-centertext-uppercase">
-                                        PAURA
+                                    <div class="col text-end align-self-center text-uppercase">
+                                        {{ document_info.emotion }}
                                     </div>
                                 </div>
+                                {% if document_info.emotionUpdateDate %}
                                 <div class="row">
                                     <div class="col-12 text-end">
-                                        <span class="text-modified text-muted">modificato in data 2022-10-01</span>
+                                        <span class="text-modified text-muted">modificato in data {{ document_info.emotionUpdateDate }}</span>
                                     </div>
                                 </div>
+                                {% endif %}
                             </li>
+                            {% endif %}
                         </ul>
                         <ul class="list-group mt-2 list-group-flush">
                             <li class="list-group-item">
@@ -167,7 +177,7 @@ Analysis Details Page
                                         Lingua dell'analisi
                                     </div>
                                     <div class="col text-end align-self-center">
-                                        Italiano
+                                        {{ document_info.analysisLanguage }}
                                     </div>
                                 </div>
                             </li>
@@ -177,7 +187,7 @@ Analysis Details Page
                                         Responsabile caricamento
                                     </div>
                                     <div class="col text-end align-self-center">
-                                        Nicola Costa
+                                        {{ document_info.firstName }} {{ document_info.lastName }}
                                     </div>
                                 </div>
                             </li>
@@ -187,7 +197,7 @@ Analysis Details Page
                                         Data caricamento
                                     </div>
                                     <div class="col text-end align-self-center">
-                                        2022-09-20
+                                        {{ document_info.analysisAddedDate }}
                                     </div>
                                 </div>
                             </li>
@@ -203,27 +213,13 @@ Analysis Details Page
                         <div class="row">
                             <div class="col-12 px-2">
                                 <ul class="d-flex flex-wrap p-0">
+                                    {% for k in keywords_list %}
                                     <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        ciao
+                                        {{ k.keywordName }}
                                     </li>
-                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        come stai
-                                    </li>
-                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        polizia
-                                    </li>
-                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        asdfgh
-                                    </li>
-                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        bla bla bla bla bla
-                                    </li>
-                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        ciao2
-                                    </li>
-                                    <li class="list-group-item border-0 bg-white mx-1 mb-2">
-                                        ciao33
-                                    </li>
+                                    {% else %}
+                                    <li class="list-group-item border-0 bg-white fst-italic">Nessuna parola chiave...</li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -244,12 +240,13 @@ Analysis Details Page
                 </div>
                 <div class="row mb-3">
                     <ul class="list-group p-0" id="document_text">
+                        {% for p in paragraphs_info %}
                         <li class="list-group-item border-0">
-                            <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : neutrale Intensit&agrave; : 91%">asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie ceweewcewc</p>
+                            <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : {{ p.paragraphSentiment }} Intensit&agrave; : {{ p.paragraphSentimentIntensity }}%">
+                                {{ p.content }}
+                            </p>
                         </li>
-                        <li class="list-group-item border-0">
-                            <p class="document-p m-0">asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie cew asncinewcinweicnec wecnwekjncweicnwcin njencn icn iewc icewiiwen nwcwec nncek nce ce cwe wecnie ceweewcewc</p>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>

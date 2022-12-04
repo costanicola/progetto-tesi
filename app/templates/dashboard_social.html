@@ -4,6 +4,10 @@
 Dashboard Social Networks
 {% endblock %}
 
+{% block file %}
+<script src="{{ url_for('static', filename='js/dashboard-social-charts.js') }}"></script>
+{% endblock %}
+
 {% block main %}
 <div class="row justify-content-center m-0">
     <div class="col-12 p-0">
@@ -90,7 +94,7 @@ Dashboard Social Networks
                 </div>
             </div>
             <!--grafico pie-->
-            <div class="col-12 col-lg mt-4 mt-lg-4">
+            <div class="col-12 col-lg mt-4 mt-lg-4 pe-lg-0">
                 <div class="graph-area border shadow-sm text-center">
                     <div class="row">
                         <p class="m-0 pt-2 px-4 fw-bold">Mood complessivo commenti dei social</p>
@@ -98,7 +102,7 @@ Dashboard Social Networks
                     <div class="row my-4">
                         <div class="col-12" id="social_piechart_legend"></div>
 
-                        <div class="col-12" id="social_piechart"></div>
+                        <div class="col-12" data="{{ total_piechart }}" id="social_piechart"></div>
 
                         <div class="fst-italic text-secondary" id="social_piechart_no_data_display">
                             Ancora nessun dato da visualizzare...
@@ -107,17 +111,17 @@ Dashboard Social Networks
                 </div>
             </div>
             <!--grafico bar-->
-            <div class="col-12 col-lg mt-4 mt-lg-4">
-                <div class="graph-area border shadow-sm text-center">
+            <div class="col-12 col-lg mt-4 mt-lg-4 pe-lg-1">
+                <div class="graph-area border shadow-sm text-center h-100">
                     <div class="row">
                         <p class="m-0 pt-2 px-4 fw-bold">N° parole chiave trovate nei social</p>
                     </div>
                     <div class="row my-4">
-                        <div class="col-12" id="social_barchart_legend"></div>
+                        <div class="col-12" id="social_barplot_legend"></div>
 
-                        <div class="col-12" id="social_barchart"></div>
+                        <div class="col-12" data="{{ keywords_barplot }}" id="social_barplot"></div>
 
-                        <div class="fst-italic text-secondary" id="social_barchart_no_data_display">
+                        <div class="fst-italic text-secondary" id="social_barplot_no_data_display">
                             Ancora nessun dato da visualizzare...
                         </div>
                     </div>

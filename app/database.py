@@ -24,6 +24,55 @@ def get_documents_sentiment_quantities():
     return cursor.fetchall()
 
 
+def get_documents_preview():
+    """
+    Restituisce alcune informazioni dei documenti della Darsena salvati.
+    """
+    select = ("SELECT t.analysisId, t.analysisAddedDate, t.sentiment, p.content, t.userK "
+              "FROM textAnalysis t JOIN paragraphs p ON (t.analysisId = p.analysisK) "
+              "WHERE p.paragraphNumber = 1 "
+              "ORDER BY t.analysisId DESC")
+    cursor.execute(select)
+    return cursor.fetchall()
+
+
+def get_document_details(analysis_id):
+    """
+    Restituisce tutte le informazioni di un certo documento (identificato interamente da un'id analisi) inerente alla Darsena.
+    """
+    select = ("SELECT t.analysisLanguage, t.analysisAddedDate, t.sentiment, t.sentimentUpdateDate, t.sentimentIntensity, t.emotion, t.emotionUpdateDate, u.firstName, u.lastName "
+              "FROM textAnalysis t JOIN users u ON (t.userK = u.userId) "
+              "WHERE t.analysisId = %s")
+    param = (analysis_id, )
+    cursor.execute(select, param)
+    return cursor.fetchone()
+
+
+def get_document_keywords(analysis_id):
+    """
+    Restituisce tutte le parole chiave di un certo documento (identificato interamente da un'id analisi) inerente alla Darsena.
+    """
+    select = ("SELECT DISTINCT k.keywordName "
+              "FROM textAnalysis t JOIN attendances a ON (t.analysisId = a.analysisK) JOIN keywords k ON (a.keywordK = k.keywordId) "
+              "WHERE t.analysisId = %s")
+    param = (analysis_id, )
+    cursor.execute(select, param)
+    return cursor.fetchall()
+
+
+def get_document_paragraphs_details(analysis_id):
+    """
+    Restituisce tutti i dettagli dei paragrafi che compongono un certo documento (identificato interamente da un'id analisi) inerente alla Darsena.
+    """
+    select = ("SELECT paragraphNumber, content, paragraphSentiment, paragraphSentimentIntensity "
+              "FROM paragraphs "
+              "WHERE analysisK = %s "
+              "ORDER BY paragraphNumber")
+    param = (analysis_id, )
+    cursor.execute(select, param)
+    return cursor.fetchall()
+
+
 def get_social_posts_count(social_name):
     """
     Restituisce il numero di post di un certo social.
@@ -38,7 +87,7 @@ def get_social_posts_count(social_name):
 
 def get_social_comments_count(social_name):
     """
-    Restituisce il numero di post di un certo social.
+    Restituisce il numero di commenti di un certo social.
     """
     select = ("SELECT IFNULL(COUNT(*), 0) AS quantity "
               "FROM socialPosts p JOIN postComments c ON (p.postId = c.postK) "
@@ -58,6 +107,29 @@ def get_social_last_post_date(social_name):
     param = (social_name, )
     cursor.execute(select, param)
     return cursor.fetchone()["lastDate"]
+
+
+def get_socials_keywords_count():
+    """
+    Restituisce, per ciascun social, il numero di parole chiave trovate nei suoi commenti.
+    """
+    select = ("SELECT p.socialName, COUNT(*) AS nKeywords "
+              "FROM socialPosts p JOIN postComments c ON (p.postId = c.postK) JOIN textAnalysis t ON (c.analysisK = t.analysisId) JOIN attendances a ON (t.analysisId = a.analysisK) "
+              "GROUP BY p.socialName "
+              "ORDER BY p.socialName")
+    cursor.execute(select)
+    return cursor.fetchall()
+
+
+def get_social_comments_sentiment_total():
+    """
+    Restituisce il sentiment totale dei commenti di tutti i social.
+    """
+    select = ("SELECT t.sentiment, COUNT(*) AS n "
+              "FROM textAnalysis t JOIN postComments c ON (t.analysisId = c.analysisK) "
+              "GROUP BY t.sentiment")
+    cursor.execute(select)
+    return cursor.fetchall()
 
 
 def get_all_social_posts_preview(social_name):
@@ -89,13 +161,27 @@ def get_post_details(post_id):
 
 def get_post_comments_details(post_id):
     """
-    Restituisce le informazioni di tutti i commenti di un certo post.
+    Restituisce le informazioni di tutti i commenti di primo livello (senza i commenti risposta) di un certo post.
     """
-    select = ("SELECT c1.commentId, c1.commentDatetime, c1.content, c1.nLike, COUNT(c2.replyTo) AS nReplies, c1.replyTo "
-              "FROM postComments c1 LEFT JOIN postComments c2 ON (c1.commentId = c2.replyTo) "
-              "WHERE c1.postK = %s "
+    select = ("SELECT c1.commentId, c1.commentDatetime, c1.content, c1.nLike, COUNT(c2.replyTo) AS nReplies, t.sentiment, t.sentimentIntensity, IFNULL(t.sentimentUpdateDate, 0) AS sentimentUpdateDate "
+              "FROM postComments c1 LEFT JOIN postComments c2 ON (c1.commentId = c2.replyTo) JOIN textAnalysis t ON (c1.analysisK = t.analysisId) "
+              "WHERE c1.postK = %s AND c1.replyTo IS NULL "
               "GROUP BY c1.commentId, c1.commentDatetime, c1.content, c1.nLike "
-              "ORDER BY nReplies DESC")
+              "ORDER BY c1.nLike DESC")
+    param = (post_id, )
+    cursor.execute(select, param)
+    return cursor.fetchall()
+
+
+def get_post_comments_replies_details(post_id):
+    """
+    Restituisce le informazioni di tutte le risposte ai commenti di un certo post.
+    """
+    select = ("SELECT c.commentId, c.commentDatetime, c.content, c.nLike, c.replyTo, t.sentiment, t.sentimentIntensity, IFNULL(t.sentimentUpdateDate, 0) AS sentimentUpdateDate "
+              "FROM postComments c JOIN textAnalysis t ON (c.analysisK = t.analysisId) "
+              "WHERE postK = %s AND replyTo IS NOT NULL "
+              "GROUP BY c.commentId, c.commentDatetime, c.content, c.nLike "
+              "ORDER BY c.commentDatetime")
     param = (post_id, )
     cursor.execute(select, param)
     return cursor.fetchall()
@@ -111,6 +197,25 @@ def get_post_comments_keywords(post_id):
     param = (post_id, )
     cursor.execute(select, param)
     return cursor.fetchall()
+
+
+def update_comment_sentiment(comment_id, new_sentiment):
+    """
+    Modifica il sentiment di un certo commento e restituisce il nuovo con la data di modifica.
+    """
+    update = ("UPDATE textAnalysis t, postComments c "
+              "SET t.sentiment = %s, t.sentimentUpdateDate = CURDATE() "
+              "WHERE t.analysisId = c.analysisK AND c.commentId = %s")
+    param = (new_sentiment, comment_id)
+    cursor.execute(update, param)
+    conn.commit()
+    
+    select = ("SELECT t.sentiment, t.sentimentUpdateDate "
+              "FROM textAnalysis t JOIN postComments c ON (t.analysisId = c.analysisK) "
+              "WHERE c.commentId = %s")
+    param = (comment_id, )
+    cursor.execute(select, param)
+    return cursor.fetchone()
 
 
 def get_social_posts_ids(social_name):
@@ -288,24 +393,30 @@ def get_keyword_sentiment_quantities_through_time(keyword_id):
     return cursor.fetchall()
 
 
-def insert_new_keyword(keyword_name, category_name, synonyms):
+def insert_new_keyword(keyword_name, category_id):
     """
-    Inserisce una nuova parola chiave di una determinata categoria ed anche i suoi sinonimi nel db. DA FINIREeEeEeEeEeEeEeEeEeEeE
+    Inserisce una nuova parola chiave di una determinata categoria nel db e restituisce il suo id.
     """
-    select = ("SELECT categoryId "
-              "FROM keywordsCategories "
-              "WHERE categoryName = %s")
-    param = (category_name, )
-    cursor.execute(select, param)
-    category_id = cursor.fetchone()["categoryId"]
-    
     insert = ("INSERT INTO keywords (keywordName, categoryK) "
               "VALUES (%s, %s)")
     param = (keyword_name, category_id)
     cursor.execute(insert, param)
     conn.commit()
     
+    select = ("SELECT MAX(keywordId) AS keywordId "
+              "FROM keywords")
+    cursor.execute(select)
+    return cursor.fetchone()["keywordId"]
+
+
+def insert_keyword_synonym(keyword_id, synonymName):
+    """
+    Inserisce una parola simile alla parola chiave (identificata dal suo id) nel db.
+    """
     insert = ("INSERT INTO keywordsSynonyms (synonymName, keywordK) "
-              "VALUES ()")
-        
+              "VALUES (%s, %s)")
+    param = (synonymName, keyword_id)
+    cursor.execute(insert, param)
+    conn.commit()
+    
         
