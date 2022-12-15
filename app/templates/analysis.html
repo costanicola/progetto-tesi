@@ -5,7 +5,18 @@ Analysis Page
 {% endblock %}
 
 {% block main %}
-<form class="row m-0 my-4" action="{{ url_for('document_analysis') }}" method="POST" enctype="multipart/form-data">
+{% if message %}
+<div class="position-absolute bottom-0 start-50 translate-middle-x mb-5" style="z-index: 11">
+    <div id="analysis_message_toast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fw-bold">{{ message }}</div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Chiudi"></button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<form class="row m-0 my-4" action="{{ url_for('document_analysis') }}" method="POST" enctype="multipart/form-data" id="analyse_document_form">
     <div class="col-1"></div>
     <div class="col-10">
         <div class="row">
@@ -39,7 +50,7 @@ Analysis Page
             <div class="col-lg-2 mb-3 p-0 d-flex align-items-stretch"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Consente di rilevare emozioni come paura, rabbia, tristezza e gioia">
                 <div class="analysis-option col-12 border shadow-sm py-2 py-lg-0">
                     <div class="form-check form-switch m-0">
-                        <input class="form-check-input me-2" type="checkbox" role="switch" name="switch_feel" id="switch_feel">
+                        <input class="form-check-input me-2" type="checkbox" role="switch" name="switch_feel" id="switch_feel" />
                         <label class="form-check-label" for="switch_feel">Trova emozione</label>
                     </div>
                 </div>
@@ -65,7 +76,7 @@ Analysis Page
                 </div>
                 <div class="row mt-5 text-center">
                     <div class="col-12 text-center">
-                        <label class="analysis-buttons-text" for="upload_doc">Carica un file PDF, DOCX, TXT, RTF o ODT utilizzando il bottone qui sotto</label>
+                        <label class="analysis-buttons-text" for="upload_doc">carica un file PDF, DOCX, TXT, RTF o ODT utilizzando il bottone qui sotto</label>
                     </div>
                 </div>
                 <div class="row mt-5 justify-content-center">

@@ -4,6 +4,10 @@
 Dashboard Facebook
 {% endblock %}
 
+{% block file %}
+<script src="{{ url_for('static', filename='js/dashboard-facebook-charts.js') }}"></script>
+{% endblock %}
+
 {% block dashboard_title %}
 Dashboard Facebook <span class="ms-3 bi bi-facebook"></span>
 {% endblock %}
@@ -12,7 +16,7 @@ Dashboard Facebook <span class="ms-3 bi bi-facebook"></span>
 <div class="row my-4">
     <div class="col-12" id="fb_piechart_legend"></div>
 
-    <div class="col-12" id="fb_piechart"></div>
+    <div class="col-12" data="{{ fb_comments_piechart }}" id="fb_piechart"></div>
 
     <div class="fst-italic text-secondary" id="fb_piechart_no_data_display">
         Ancora nessun dato da visualizzare...
@@ -24,7 +28,7 @@ Dashboard Facebook <span class="ms-3 bi bi-facebook"></span>
 <div class="row my-4">
     <div class="col-12" id="fb_linechart_legend"></div>
 
-    <div class="col-12" id="fb_linechart"></div>
+    <div class="col-12" data="{{ fb_linechart_data }}" id="fb_linechart"></div>
 
     <div class="fst-italic text-secondary" id="fb_linechart_no_data_display">
         Ancora nessun dato da visualizzare...
@@ -46,40 +50,40 @@ Dashboard Facebook <span class="ms-3 bi bi-facebook"></span>
     <!--reazioni-->
     <div class="row">
         <ul class="d-flex flex-wrap justify-content-center mb-0">
-            {% if p.likes != 0 %}
+            {% if p.nLike %}
             <li class="list-group-item border-0 p-0 me-3 mt-1 bg-transparent">
                 <img class="post-box-icon mb-1" src="{{ url_for('static', filename='images/fb_like.png') }}" alt="icona mi piace facebook" />
-                <span>{{ p.likes }}</span>
+                <span>{{ p.nLike }}</span>
             </li>
             {% endif %}
-            {% if p.wow != 0 %}
+            {% if p.nWow %}
             <li class="list-group-item border-0 p-0 me-3 mt-1 bg-transparent">
                 <img class="post-box-icon mb-1" src="{{ url_for('static', filename='images/fb_wow.png') }}" alt="icona sorpresa facebook" />
-                <span>{{ p.wow }}</span>
+                <span>{{ p.nWow }}</span>
             </li>
             {% endif %}
-            {% if p.sigh != 0 %}
+            {% if p.nSigh %}
             <li class="list-group-item border-0 p-0 me-3 mt-1 bg-transparent">
                 <img class="post-box-icon mb-1" src="{{ url_for('static', filename='images/fb_sigh.png') }}" alt="icona tristezza facebook" />
-                <span>{{ p.sigh }}</span>
+                <span>{{ p.nSigh }}</span>
             </li>
             {% endif %}
-            {% if p.love != 0 %}
+            {% if p.nLove %}
             <li class="list-group-item border-0 p-0 me-3 mt-1 bg-transparent">
                 <img class="post-box-icon mb-1" src="{{ url_for('static', filename='images/fb_love.png') }}" alt="icona amore facebook" />
-                <span>{{ p.love }}</span>
+                <span>{{ p.nLove }}</span>
             </li>
             {% endif %}
-            {% if p.haha != 0 %}
+            {% if p.nHaha %}
             <li class="list-group-item border-0 p-0 me-3 mt-1 bg-transparent">
                 <img class="post-box-icon mb-1" src="{{ url_for('static', filename='images/fb_haha.png') }}" alt="icona risata facebook" />
-                <span>{{ p.haha }}</span>
+                <span>{{ p.nHaha }}</span>
             </li>
             {% endif %}
-            {% if p.grrr != 0 %}
+            {% if p.nGrrr %}
             <li class="list-group-item border-0 p-0 mt-1 bg-transparent">
                 <img class="post-box-icon mb-1" src="{{ url_for('static', filename='images/fb_grrr.png') }}" alt="icona rabbia facebook" />
-                <span>{{ p.grrr }}</span>
+                <span>{{ p.nGrrr }}</span>
             </li>
             {% endif %}
         </ul>

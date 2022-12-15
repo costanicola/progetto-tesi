@@ -81,6 +81,7 @@ $(document).ready(function() {
             const categoryName = keywordData[k]["categoryName"];
             const keywordId = keywordData[k]["keywordId"];
             const keywordName = keywordData[k]["keywordName"];
+            const keywordSize = keywordName.length < 25 ? "fs-5" : "fs-6";
 
             //ogni parola chiave ha un "vedi dettaglio" cliccabile. al click si apre un modal con piechart (cambiabile con una tabella) e un linechart
             $("#keywords_list_cat" + categoryId).append(`
@@ -128,7 +129,7 @@ $(document).ready(function() {
                                                         <div class="col-12" id="keyword_${keywordId}_piechart"></div>
                     
                                                         <div class="fst-italic text-secondary" id="keyword_${keywordId}_piechart_no_data_display">
-                                                            Ancora nessun dato da visualizzare...
+                                                            Ancora nessun dato da visualizzare in formato piechart...
                                                         </div>
                                                     </div>
                                                     <div class="row mt-4 justify-content-center">
@@ -195,7 +196,7 @@ $(document).ready(function() {
                                                 <div class="col-12 p-0" id="keyword_${keywordId}_linechart"></div>
         
                                                 <div class="fst-italic text-secondary" id="keyword_${keywordId}_linechart_no_data_display">
-                                                    Ancora nessun dato da visualizzare...
+                                                    Ancora nessun dato da visualizzare in formato linechart...
                                                 </div>
                                             </div>
                                             <div class="row mt-4 justify-content-center">
@@ -222,7 +223,7 @@ $(document).ready(function() {
                 <div class="col keyword-box m-3 mx-4 d-flex align-content-center flex-wrap flex-column justify-content-center">
                     <div class="row">
                         <div class="col">
-                            <p class="m-0 text-uppercase fw-bold fs-5">${keywordName}</p>
+                            <p class="m-0 text-uppercase fw-bold ${keywordSize}">${keywordName}</p>
                         </div>
                     </div>
                     <div class="row mt-1">
@@ -281,7 +282,7 @@ $(document).ready(function() {
                         const pieDimensions = 240;
                         const pieRadius = pieDimensions / 2 - 10;  //10 -> un po' di margine
                         const pieArcGenerator = d3.arc().innerRadius(0).outerRadius(pieRadius);
-                        const pieColor = d3.scaleOrdinal().range(["#D41159", "#ECE839", "#1A85FF"]);
+                        const pieColor = d3.scaleOrdinal().range(["#1A85FF", "#ECE839", "#D41159"]);
                         const pieSvg = d3.select("#keyword_" + keywordId + "_piechart").append("svg").attr("width", pieDimensions).attr("height", pieDimensions)
                         .append("g").attr("transform", "translate(" + pieDimensions / 2 + "," + pieDimensions / 2 + ")").attr("id", "keyword_" + keywordId + "_pie_g");
                         

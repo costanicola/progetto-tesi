@@ -12,11 +12,12 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <!--D3-GRAPH-->
     <script src="https://d3js.org/d3.v4.js"></script>
+    <!-- JSON5 (https://github.com/json5/json5) consente l'uso dell'apice singolo per indicare una stringa in json -->
+    <script src="https://unpkg.com/json5@2/dist/index.min.js"></script>
     <!--JQuery & JavaScript-->
     <script src="{{ url_for('static', filename='js/jquery-3.6.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/javascript.js') }}"></script>
-    <!-- JSON5 (https://github.com/json5/json5) consente l'uso dell'apice singolo per indicare una stringa in json -->
-    <script src="https://unpkg.com/json5@2/dist/index.min.js"></script>
+    <script src="{{ url_for('static', filename='js/charts-classes.js') }}"></script>
     {% block file %}{% endblock %}
 </head>
 <body>
@@ -36,12 +37,12 @@
                                 <p class="m-0">Confermi di voler effettuare il logout?</p>
                             </div>
                         </div>
-                        <div class="row my-4">
+                        <form class="row my-4" action="{{ url_for('return_to_login_page') }}" method="POST">
                             <div class="col-12 text-end">
-                                <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
-                                <button class="btn btn-primary">S&igrave;, esci</button>
+                                <button type="button" class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                                <input type="submit" class="btn btn-primary" value="S&igrave;, esci" />
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

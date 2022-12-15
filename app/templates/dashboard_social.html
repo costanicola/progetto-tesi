@@ -5,14 +5,14 @@ Dashboard Social Networks
 {% endblock %}
 
 {% block file %}
-<script src="{{ url_for('static', filename='js/dashboard-social-charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard-socials-charts.js') }}"></script>
 {% endblock %}
 
 {% block main %}
 <div class="row justify-content-center m-0">
     <div class="col-12 p-0">
         <p class="upper-advisor m-0 py-2 px-3 text-center">
-            Informazioni prelevate dal <span class="fw-bold">2020-07-01</span> al <span class="fw-bold">2022-09-29 (ultimo aggiornamento)</span>.
+            Informazioni prelevate dai profili social ufficiali del Comune di Ravenna (dal <span class="fw-bold">{{ from_date }}</span> al <span class="fw-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ogni mezzanotte questa data viene aggiornata">{{ to_date }}</span>).
         </p>
     </div>
     <div class="col-11 my-4">
@@ -95,14 +95,14 @@ Dashboard Social Networks
             </div>
             <!--grafico pie-->
             <div class="col-12 col-lg mt-4 mt-lg-4 pe-lg-0">
-                <div class="graph-area border shadow-sm text-center">
+                <div class="graph-area border shadow-sm text-center h-100">
                     <div class="row">
                         <p class="m-0 pt-2 px-4 fw-bold">Mood complessivo commenti dei social</p>
                     </div>
                     <div class="row my-4">
                         <div class="col-12" id="social_piechart_legend"></div>
 
-                        <div class="col-12" data="{{ total_piechart }}" id="social_piechart"></div>
+                        <div class="col-12" data="{{ comments_piechart }}" id="social_piechart"></div>
 
                         <div class="fst-italic text-secondary" id="social_piechart_no_data_display">
                             Ancora nessun dato da visualizzare...
@@ -114,7 +114,7 @@ Dashboard Social Networks
             <div class="col-12 col-lg mt-4 mt-lg-4 pe-lg-1">
                 <div class="graph-area border shadow-sm text-center h-100">
                     <div class="row">
-                        <p class="m-0 pt-2 px-4 fw-bold">N° parole chiave trovate nei social</p>
+                        <p class="m-0 pt-2 px-4 fw-bold">N° parole chiave trovate nei commenti</p>
                     </div>
                     <div class="row my-4">
                         <div class="col-12" id="social_barplot_legend"></div>

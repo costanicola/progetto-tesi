@@ -1,12 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Oct 30 10:26:02 2022
-@author: Nicola
-"""
-
 import requests
 import spacy
-from sentiment_analyzer import Sentiment
+import sentiment_analyzer as sa
 import text_handler
 from keywords_handler import KeywordsHandler
 import re
@@ -24,11 +18,11 @@ def analyse_text(text):
     text_no_emoji = text_handler.convert_emoji_ita(text)
     for p in text_handler.split_text_into_paragraphs(text_no_emoji):
         try:
-            sent, score = sentiment_analyzer.get_sentiment_ita(p)
+            sent, score = sa.get_sentiment_ita(p)
             text_sentiments[sent] += score
         except RuntimeError:
             for sp in text_handler.split_paragraph(p):
-                sent, score = sentiment_analyzer.get_sentiment_ita(sp)
+                sent, score = sa.get_sentiment_ita(sp)
                 text_sentiments[sent] += score
             
     return max(text_sentiments, key=text_sentiments.get)
@@ -56,8 +50,8 @@ def check_keywords_presence(object_id, object_text, object_type, object_date, se
 
 
 nlp = spacy.load("it_core_news_sm")
-sentiment_analyzer = Sentiment()
 keywords_handler = KeywordsHandler()
+
 
 def facebook_search():
     page_id = os.environ.get("FACEBOOK_PAGE_ID")
@@ -73,7 +67,7 @@ def facebook_search():
                 post_created_time = post["created_time"]
                 post_text = post["message"]
                 
-                if (int(post_created_time.split("-")[0]) <= 2020 and int(post_created_time.split("-")[1]) <= 6):
+                if (int(post_created_time.split("-")[0]) <= 2022 and int(post_created_time.split("-")[1]) <= 10):
                     return
                 
                 ### calcolo del sentiment analysis ###
@@ -174,7 +168,7 @@ def instagram_search():
             post_comments_count = res_post["comments_count"]
             post_like_count = res_post["like_count"]
             
-            if (int(post_created_time.split("-")[0]) <= 2020 and int(post_created_time.split("-")[1]) <= 6):
+            if (int(post_created_time.split("-")[0]) <= 2022 and int(post_created_time.split("-")[1]) <= 10):
                 return
             
             ### calcolo del sentiment analysis ###
@@ -224,23 +218,5 @@ def instagram_search():
         res_media = requests.get(res_media["paging"]["next"]).json()
             
 
-s = """ZamenhOFF edicola sociale e Casa delle Memorie vive
-Un progetto per creare nuovi spazi e servizi aperti alla città e ai suoi visitatori. Un progetto per la rigenerazione delle comunità e con le comunità
-
-Il proponente | Chi
-Villaggio Globale cooperativa sociale
-
-Partners: Sguardi in Camera APS; Asja Lacis APS; AIDIA-TS (sostenitori: ACER Ravenna; Centro sociale La Quercia; UISP Ravenna; Parrocchia di San Pie Damiano; gruppo Scout Ravenna 4)
-
-Tipologia di progetto | Parole chiave
-Attivazione e riuso dei beni comuni | Arte |Cultura | Memoria storica | Inclusione | Co-progettazione | Ambiente
-
-La proposta | Cosa
-ZamenhOFF è un progetto che nasce nel quartiere Darsena - Gulli per promuovere attività culturali e servizi sociali, in due luoghi connessi:
-
-Casa delle memorie vive. Una casa per attività artistiche e sociali dedicate al legame tra luoghi e persone, attraverso la ricerca ed il coinvolgimento diretto degli individui. Azioni previste: centro di raccolta ed elaborazione di storie, documenti, fotografie e film provenienti da archivi privati di nuovi e vecchi abitanti del quartiere; realizzazione di laboratori e seminari con la partecipazione diretta di artisti, antropologi, sociologi, architetti e storici; promozione dell'abitare collaborativo, festival annuale.
-Portierato sociale. Una portineria sociale per sostenere nelle incombenze della vita quotidiana: assistenza per pratiche digitali, punto informativo, disbrigo di pratiche amministrative per la popolazione straniera e per gli anziani...
-ZamenhOFF è un progetto di Villaggio Globale coop. sociale, Sguardi in Camera APS, Asja Lacis APS, AIDIA (Associazione Italiana Donne e Ingegneri e architetti) Ravenna - Trieste; ha una rete di partner nel quartiere, tra cui ACER Ravenna."""
-
-sent = analyse_text(s)
-check_keywords_presence("ZamenhOFF", s, "", "", sent)
+facebook_search()
+instagram_search()

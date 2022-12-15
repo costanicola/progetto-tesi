@@ -30,8 +30,8 @@ Archive Page
                     </div>
                     <div class="col-9 ps-0">
                         <select name="sort_documents" id="sort_documents" class="form-select">
-                            <option value="desc">pi&ugrave; recente</option>
-                            <option value="asc">meno recente</option>
+                            <option value="desc">dal pi&ugrave; recente</option>
+                            <option value="asc">dal meno recente</option>
                         </select>
                     </div>
                 </div>
@@ -85,7 +85,7 @@ Archive Page
             <li class="list-group-item my-1 py-2 border-0" id="document_li_{{ d.analysisId }}" user="{{ d.userK }}">
                 <span class="mx-4 me-sm-4 ms-sm-0">{{ d.analysisAddedDate }}</span>
                 <span class="text-uppercase fw-bold mx-3 me-sm-4 ms-sm-0">{{ d.sentiment }}</span>
-                <div class="text-truncate col-xl-8 col-lg-7 col-md-7 col-sm-5 d-none d-sm-inline-block align-text-bottom">{{ d.content }}</div>
+                <div class="text-truncate col-xl-8 col-lg-7 col-md-7 col-sm-5 d-none d-sm-inline-block align-text-bottom">{{ d.content|e }}</div>
                 <a class="stretched-link float-end me-1" href="{{ url_for('document_details_page', analysis_id=d.analysisId) }}">
                     <span class="bi bi-info-circle"></span>
                 </a>

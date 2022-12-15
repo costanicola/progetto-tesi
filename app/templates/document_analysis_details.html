@@ -5,53 +5,57 @@ Analysis Details Page
 {% endblock %}
 
 {% block main %}
-<div class="modal fade" id="update_modal" tabindex="-1" aria-labelledby="update_title" aria-hidden="true">
+<div class="modal fade" id="document_update_modal" tabindex="-1" aria-labelledby="document_update_title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border">
             <div class="row justify-content-center">
                 <div class="col-10 p-0">
                     <div class="row mt-3">
                         <div class="col-12">
-                            <p class="fw-bold m-0 fs-5" id="update_title">Modifica parametri analisi</p>
+                            <p class="fw-bold m-0 fs-5" id="document_update_title">Modifica parametri analisi</p>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-6 d-flex align-items-center">
-                                    <label for="sentiment_selector" class="form-label m-0">Sentiment Analysis:</label>
+                                    <label for="document_sentiment_selector" class="form-label m-0">Sentiment Analysis:</label>
                                 </div>
                                 <div class="col-6">
-                                    <select name="sentiment_selector" id="sentiment_selector" class="form-select text-uppercase">
-                                        <option class="text-uppercase" value="pos">positivo</option>
-                                        <option class="text-uppercase" value="neu">neutrale</option>
-                                        <option class="text-uppercase" value="neg">negativo</option>
+                                    <select name="document_sentiment_selector" id="document_sentiment_selector" class="form-select text-uppercase">
+                                        <option value="positivo" {% if document_info.sentiment == "positivo" %} selected {% endif %}>positivo</option>
+                                        <option value="neutrale" {% if document_info.sentiment == "neutrale" %} selected {% endif %}>neutrale</option>
+                                        <option value="negativo" {% if document_info.sentiment == "negativo" %} selected {% endif %}>negativo</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% if document_info.emotion %}
                     <div class="row mt-3">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-6 d-flex align-items-center">
-                                    <label for="feel_selector" class="form-label m-0">Emozione:</label>
+                                    <label for="document_feel_checkbox" class="form-check-label m-0">Emozione:</label>
                                 </div>
                                 <div class="col-6">
-                                    <select name="feel_selector" id="feel_selector" class="form-select text-uppercase">
-                                        <option class="text-uppercase" value="fear">paura</option>
-                                        <option class="text-uppercase" value="angry">rabbia</option>
-                                        <option class="text-uppercase" value="sadness">tristezza</option>
-                                        <option class="text-uppercase" value="joy">gioia</option>
-                                    </select>
+                                    <input class="form-check-input" type="checkbox" name="document_feel_checkbox" id="document_feel_checkbox" hide="{{ document_info.emotionHide }}" {% if document_info.emotionHide == 0 %} checked {% endif %} />
+                                    <span class="ms-1">visualizza "{{ document_info.emotion }}"</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% else %}
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <p class="m-0 text-secondary fst-italic">In questo testo si &egrave; scelto di non rilevare emozioni... </p>
+                        </div>
+                    </div>
+                    {% endif %}
                     <div class="row my-4">
                         <div class="col-12 text-end">
-                            <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
-                            <button class="btn btn-primary">Conferma e salva</button>
+                            <button type="button" class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                            <button type="button" class="btn btn-primary" id="modify_document_sentiment_button" url="{{ url_for('modify_document_sentiment', analysis_id=document_info.analysisId) }}">Conferma e salva</button>
                         </div>
                     </div>
                 </div>
@@ -60,15 +64,15 @@ Analysis Details Page
     </div>
 </div>
 
-<div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="delete_title" aria-hidden="true">
+<div class="modal fade" id="document_delete_modal" tabindex="-1" aria-labelledby="document_delete_title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border">
-            <div class="row justify-content-center">
+            <form class="row justify-content-center" action="{{ url_for('delete_document_sentiment', analysis_id=document_info.analysisId) }}" method="POST">
                 <div class="col-10 p-0">
                     <div class="row mt-3">
                         <div class="col-12 d-flex align-items-center">
                             <span class="d-inline bi bi-exclamation-triangle"></span>
-                            <p class="d-inline fw-bold ms-2 mb-0 fs-5" id="delete_title">Eliminazione</p>
+                            <p class="d-inline fw-bold ms-2 mb-0 fs-5" id="document_delete_title">Eliminazione</p>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -78,12 +82,12 @@ Analysis Details Page
                     </div>
                     <div class="row my-4">
                         <div class="col-12 text-end">
-                            <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
-                            <button class="btn btn-primary">S&igrave;, elimina</button>
+                            <button type="button" class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                            <input type="submit" class="btn btn-primary" value="S&igrave;, elimina" />
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -92,19 +96,19 @@ Analysis Details Page
     <div class="col-10 p-0">
         <div class="row gx-2 mt-3">
             <div class="col-lg-2 ps-lg-0 mb-3">
-                <button class="analysis-button back_button col-12 border shadow-sm p-0" id="ciao">
+                <a class="btn analysis-button col-12 border shadow-sm p-0" href="{{ url_for('archive_page') }}">
                     <span class="bi bi-arrow-left-short"></span>
                     <span class="analysis-buttons-text ms-1">Torna indietro</span>
-                </button>
+                </a>
             </div>
             <div class="col-lg-2 offset-lg-6 mb-3">
-                <button class="analysis-button col-12 border shadow-sm p-0" data-bs-toggle="modal" data-bs-target="#update_modal">
+                <button class="analysis-button col-12 border shadow-sm p-0" data-bs-toggle="modal" data-bs-target="#document_update_modal">
                     <span class="bi bi-gear-fill"></span>
                     <span class="analysis-buttons-text ms-2">Modifica</span>
                 </button>
             </div>
             <div class="col-lg-2 pe-lg-0 mb-3">
-                <button class="analysis-button col-12 border shadow-sm p-0" data-bs-toggle="modal" data-bs-target="#delete_modal">
+                <button class="analysis-button col-12 border shadow-sm p-0" data-bs-toggle="modal" data-bs-target="#document_delete_modal">
                     <span class="bi bi-trash"></span>
                     <span class="analysis-buttons-text ms-2">Elimina</span>
                 </button>
@@ -124,7 +128,7 @@ Analysis Details Page
                                     <div class="col align-self-center">
                                         Sentiment Analysis
                                     </div>
-                                    <div class="col text-end align-self-center fw-bold text-uppercase">
+                                    <div class="col text-end align-self-center fw-bold text-uppercase" id="document_sentiment">
                                         {{ document_info.sentiment }}
                                     </div>
                                 </div>
@@ -150,23 +154,16 @@ Analysis Details Page
                                 </div>
                             </li>
                             {% endif %}
-                            {% if document_info.emotion %}
+                            {% if document_info.emotionHide == 0 %}
                             <li class="list-group-item">
                                 <div class="row justify-content-between">
                                     <div class="col align-self-center">
                                         Emozione rilevata
                                     </div>
-                                    <div class="col text-end align-self-center text-uppercase">
+                                    <div class="col text-end align-self-center text-uppercase" id="document_emotion">
                                         {{ document_info.emotion }}
                                     </div>
                                 </div>
-                                {% if document_info.emotionUpdateDate %}
-                                <div class="row">
-                                    <div class="col-12 text-end">
-                                        <span class="text-modified text-muted">modificato in data {{ document_info.emotionUpdateDate }}</span>
-                                    </div>
-                                </div>
-                                {% endif %}
                             </li>
                             {% endif %}
                         </ul>
@@ -218,7 +215,7 @@ Analysis Details Page
                                         {{ k.keywordName }}
                                     </li>
                                     {% else %}
-                                    <li class="list-group-item border-0 bg-white fst-italic">Nessuna parola chiave...</li>
+                                    <li class="list-group-item border-0 bg-white mx-1 mb-2 fst-italic">Nessuna parola chiave...</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -243,7 +240,7 @@ Analysis Details Page
                         {% for p in paragraphs_info %}
                         <li class="list-group-item border-0">
                             <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : {{ p.paragraphSentiment }} Intensit&agrave; : {{ p.paragraphSentimentIntensity }}%">
-                                {{ p.content }}
+                                {{ p.content|e }}
                             </p>
                         </li>
                         {% endfor %}

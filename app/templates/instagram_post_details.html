@@ -4,14 +4,18 @@
 Instagram Post Details Page
 {% endblock %}
 
+{% block file %}
+<script src="{{ url_for('static', filename='js/instagram-post-chart.js') }}"></script>
+{% endblock %}
+
 {% block post_title %}
 Instagram
 {% endblock %}
 
 {% block post_comments_piechart_legend %}
-legend
+<div id="ig_post_comment_piechart_legend"></div>
 {% endblock %}
 
 {% block post_comments_piechart %}
-pie
+<div data="{{ ig_post_comments_piechart }}" id="ig_post_comment_piechart"></div>
 {% endblock %}

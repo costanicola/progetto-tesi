@@ -25,9 +25,7 @@ Dashboard Darsena Page
                     <div class="row my-4">
                         <div class="col-12" id="darsena_piechart_legend"></div>
 
-                        <div class="col-12"
-                        data='{% for data in darsena_piechart_data %}{% if loop.first %}{% raw %}{{% endraw %}{% endif %}"{{ data.sentiment }}":{{ data.numero }}{% if loop.last %}{% raw %}}{% endraw %}{% else %},{% endif %}{% endfor %}' 
-                        id="darsena_piechart"></div>
+                        <div class="col-12" data="{{ darsena_piechart_data }}" id="darsena_piechart"></div>
 
                         <div class="no-data-display fst-italic text-secondary">
                             Ancora nessun dato da visualizzare...
@@ -43,7 +41,7 @@ Dashboard Darsena Page
                     <div class="row my-4">
                         <div class="col-12" id="darsena_linechart_legend"></div>
 
-                        <div class="col-12" id="darsena_linechart"></div>
+                        <div class="col-12" data="{{ darsena_linechart_data }}" id="darsena_linechart"></div>
 
                         <div class="no-data-display fst-italic text-secondary">
                             Ancora nessun dato da visualizzare...

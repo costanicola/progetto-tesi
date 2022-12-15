@@ -4,6 +4,10 @@
 Dashboard Instagram
 {% endblock %}
 
+{% block file %}
+<script src="{{ url_for('static', filename='js/dashboard-instagram-charts.js') }}"></script>
+{% endblock %}
+
 {% block dashboard_title %}
 Dashboard Instagram <span class="ms-3 bi bi-instagram"></span>
 {% endblock %}
@@ -12,7 +16,7 @@ Dashboard Instagram <span class="ms-3 bi bi-instagram"></span>
 <div class="row my-4">
     <div class="col-12" id="ig_piechart_legend"></div>
 
-    <div class="col-12" id="ig_piechart"></div>
+    <div class="col-12" data="{{ ig_comments_piechart }}" id="ig_piechart"></div>
 
     <div class="fst-italic text-secondary" id="ig_piechart_no_data_display">
         Ancora nessun dato da visualizzare...
@@ -24,7 +28,7 @@ Dashboard Instagram <span class="ms-3 bi bi-instagram"></span>
 <div class="row my-4">
     <div class="col-12" id="ig_linechart_legend"></div>
 
-    <div class="col-12" id="ig_linechart"></div>
+    <div class="col-12" data="{{ ig_linechart_data }}" id="ig_linechart"></div>
 
     <div class="fst-italic text-secondary" id="ig_linechart_no_data_display">
         Ancora nessun dato da visualizzare...
@@ -46,10 +50,10 @@ Dashboard Instagram <span class="ms-3 bi bi-instagram"></span>
     <!--reazioni-->
     <div class="row">
         <ul class="d-flex flex-wrap justify-content-center mb-0">
-            {% if p.likes != 0 %}
+            {% if p.nLike %}
             <li class="list-group-item border-0 p-0 me-3 mt-1 bg-transparent">
                 <img class="post-box-icon mb-1" src="{{ url_for('static', filename='images/ig_like.png') }}" alt="icona mi piace facebook" />
-                <span>{{ p.likes }}</span>
+                <span>{{ p.nLike }}</span>
             </li>
             {% endif %}
         </ul>

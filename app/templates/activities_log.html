@@ -5,13 +5,13 @@ Activities Log
 {% endblock %}
 
 {% block main %}
-<div class="row justify-content-center table-hover m-0 my-4">
+<div class="row justify-content-center m-0 my-4">
     <div class="col-10">
         <div class="row">
             <h2 class="p-0 mb-4 fw-bold">Log attivit&agrave; svolte</h2>
         </div>
         <div class="row">
-            <table class="table table-sm table-hover align-middle">
+            <table class="table table-sm align-middle table-striped">
                 <thead>
                     <tr>
                         <th id="timestamp">Timestamp</th>
@@ -20,11 +20,13 @@ Activities Log
                     </tr>
                 </thead>
                 <tbody class="bg-white text-dark">
+                    {% for act in activities %}
                     <tr>
-                        <td headers="timestamp">2022-08-09 18:48:22</td>
-                        <td headers="user">Nicola Costa</td>
-                        <td headers="activity">Eliminazione documento POSITIVO precedentemente salvato in data 2022-07-30 da Nicola Costa</td>
+                        <td headers="timestamp">{{ act.activityDatetime }}</td>
+                        <td headers="user">{{ act.firstName }} {{ act.lastName }}</td>
+                        <td headers="activity">{{ act.activityDescription }}</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

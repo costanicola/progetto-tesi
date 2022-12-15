@@ -1,21 +1,16 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov  1 14:50:11 2022
-@author: Nicola
-"""
-
 import requests
 from datetime import datetime
 from post import Post
 from comment import Comment
+import os
 
 
-API_ACCESS_TOKEN = "***"
-FB_PAGE_ID = "***"
-IG_PAGE_ID = "***"
+API_ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN_FACEBOOK_API")
+FB_PAGE_ID = os.environ.get("FACEBOOK_PAGE_ID")
+IG_PAGE_ID = os.environ.get("INSTAGRAM_ACCOUNT_ID")
 API_VERSION = 14.0
 STOP_YEAR = 2022
-STOP_MONTH = 9
+STOP_MONTH = 7
 
 
 def facebook_api_req(object_id, action):

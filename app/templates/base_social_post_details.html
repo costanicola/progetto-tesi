@@ -43,9 +43,7 @@
                     <div class="col-12 border-start border-5 border-primary">
                         <ul class="d-flex flex-wrap p-0 m-0">
                             {% for k in keywords_list %}
-                            <li class="list-group-item border-0 bg-white mx-1 my-2">
-                                {{ k.keywordName }}
-                            </li>
+                            <li class="list-group-item border-0 bg-white mx-1 my-2">{{ k.keywordName }}</li>
                             {% else %}
                             <li class="list-group-item border-0 fst-italic">Nessuna parola chiave trovata...</li>
                             {% endfor %}
@@ -60,17 +58,20 @@
             <div class="col-12 col-lg-6 p-0 mt-4 mt-lg-0">
                 <div class="row">
                     <div class="col-12 px-4">
-                        <h3 class="fw-bold">Commenti</h3>
+                        <h3 class="fw-bold">Mood commenti</h3>
                     </div>
                 </div>
                 <div class="row mt-1 mx-2 border-start border-5 border-primary">
-                    <!--legenda con i simbolini e i numeri-->
-                    <div class="col-12 col-lg-5 bg-white">
+                    <!--legenda-->
+                    <div class="col-12 col-sm-4 bg-white py-1 d-flex align-items-center justify-content-center">
                         {% block post_comments_piechart_legend %}{% endblock %}
                     </div>
                     <!--piechart-->
-                    <div class="col-12 col-lg-5 bg-white">
+                    <div class="col-12 col-sm-6 bg-white d-flex justify-content-center py-1">
                         {% block post_comments_piechart %}{% endblock %}
+                    </div>
+                    <div class="col-12 col-sm-10 bg-white pb-2 fst-italic" id="post_comments_piechart_no_data_display">
+                        Nessun commento da visualizzare...
                     </div>
                 </div>
             </div>
@@ -158,7 +159,7 @@
                                         </div>
                                     </div>
                                     <div class="row my-2">
-                                        <p class="m-0 lh-sm">{{ comm.content }}</p>
+                                        <p class="m-0 lh-sm">{{ comm.content|e }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -235,7 +236,7 @@
                                         </div>
                                     </div>
                                     <div class="row my-2">
-                                        <p class="m-0 lh-sm">{{ repl.content }}</p>
+                                        <p class="m-0 lh-sm">{{ repl.content|e }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -244,7 +245,11 @@
                     {% endif %}
                     {% endfor %}
                     {% else %}
-                    <li class="list-group-item border-0 fst-italic">Nessun commento sotto questo post...</li>
+                    <div class="row px-2 mt-1">
+                        <div class="col-12 border-start border-5 border-primary d-flex flex-wrap">
+                            <li class="list-group-item border-0 fst-italic">Nessun commento sotto questo post...</li>
+                        </div>
+                    </div>
                     {% endfor %}
                 </ul>
             </div>

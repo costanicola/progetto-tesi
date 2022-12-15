@@ -5,15 +5,15 @@ Analysis Result
 {% endblock %}
 
 {% block main %}
-<div class="modal fade" id="save_modal" tabindex="-1" aria-labelledby="save_title" aria-hidden="true">
+<div class="modal fade" id="document_save_modal" tabindex="-1" aria-labelledby="document_save_title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border">
-            <div class="row justify-content-center">
+            <form class="row justify-content-center" action="{{ url_for('confirm_document_save') }}" method="POST">
                 <div class="col-10 p-0">
                     <div class="row mt-3">
                         <div class="col-12 d-flex align-items-center">
                             <span class="d-inline bi bi-box-arrow-down"></span>
-                            <p class="d-inline fw-bold ms-2 mb-0 fs-5" id="save_title">Salvataggio</p>
+                            <p class="d-inline fw-bold ms-2 mb-0 fs-5" id="document_save_title">Salvataggio</p>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -24,12 +24,12 @@ Analysis Result
                     </div>
                     <div class="row my-4">
                         <div class="col-12 text-end">
-                            <button class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
-                            <button class="btn btn-primary">S&igrave;, salva</button>
+                            <button type="button" class="btn btn-outline-dark me-3" data-bs-dismiss="modal">Chiudi</button>
+                            <input type="submit" class="btn btn-primary" value="S&igrave;, salva" />
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -41,7 +41,7 @@ Analysis Result
                 <span class="bi bi-arrow-left-short"></span>
                 <span class="analysis-buttons-text ms-1">Torna indietro</span>
             </button>
-            <button class="analysis-button col-lg-2 border border-primary shadow-sm p-0 mb-3" data-bs-toggle="modal" data-bs-target="#save_modal" id="save_analysis_button">
+            <button class="analysis-button col-lg-2 border border-primary shadow-sm p-0 mb-3" data-bs-toggle="modal" data-bs-target="#document_save_modal" id="save_analysis_button">
                 <span class="analysis-buttons-text fw-bold text-white">Salva analisi</span>
                 <span class="bi bi-check text-white"></span>
             </button>
@@ -49,10 +49,10 @@ Analysis Result
         <div class="row">
             <div class="col-lg-8 mb-3 ps-lg-0 pe-lg-3">
                 <ul class="list-group">
-                    {% for p in paragraphs_infos %}
+                    {% for p in paragraphs_info %}
                     <li class="list-group-item border-0">
                         <p class="document-p m-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Sentiment : {{ p.sentiment }} Intensit&agrave; : {{ p.intensity }}%">
-                            {{ p.text }}
+                            {{ p.text|e }}
                         </p>
                     </li>
                     {% endfor %}

@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Nov  4 10:11:40 2022
-@author: Nicola
-"""
-
 import magic  # https://github.com/ahupp/python-magic
 import mimetypes
 from PyPDF2 import PdfReader  # https://github.com/py-pdf/PyPDF2
