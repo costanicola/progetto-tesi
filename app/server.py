@@ -23,14 +23,14 @@ app.config.from_mapping(SECRET_KEY=secrets.token_hex())  #per la session serve u
 app.config["UPLOAD_FOLDER"] = "./static/upload/"
 
 app.config.update(CELERY_CONFIG={
-    "broker_url": "redis://default:redispw@localhost:49153",
-    "result_backend": "redis://default:redispw@localhost:49153",
+    "broker_url": "redis://default:redispw@localhost:6379",
+    "result_backend": "redis://default:redispw@localhost:6379",
 })
 celery = make_celery(app)
 celery.conf.beat_schedule = {
     "background-process-every-midnight": {
         "task": "server.bg_process",
-        "schedule": 30.0 #crontab(minute=0, hour=0) # <= tutti i giorni a mezzanotte
+        "schedule": crontab(minute=0, hour=0) # <= tutti i giorni a mezzanotte
     },
 }
 
@@ -49,8 +49,7 @@ nlp = spacy.load("it_core_news_sm")
 @celery.task
 def bg_process():
     print("PROCESSO IN BG INIZIATO")
-    #check_new_social_informations()
-    print("BG")
+    check_new_social_informations()
     print("PROCESSO IN BG TERMINATO")
 
 
@@ -75,6 +74,11 @@ def handle_social_comment_analysis(comment):
     
     # inserimento db commento
     db.insert_social_comment(comment.get_id(), comment.get_created_time(), comment.get_text(), comment.get_like_count(), comment.get_reply_to_id(), comment.get_post_related_id(), analysis_id)
+
+    # ricerca parole chiave
+    found_keywords = search_keywords(text_comment_no_emoji)
+    for keyword_name in found_keywords:
+        db.insert_text_keyword_attendance(keyword_name, analysis_id)
 
 
 # prendo tutti gli id di facebook e instagram nel db e li confronto con i post e commenti delle pagine per trovarne di nuovi e li inserisco nel db
@@ -114,6 +118,25 @@ def check_new_social_informations():
         for comment in ig_comment_res:
             handle_social_comment_analysis(comment)
             
+
+def search_keywords(text):
+    found_keywords = set()
+    
+    # dizionario con {"nome parola chiave 1": ["sinonimo1", "sinonimo2"], "nome parola chiave 2": [], ...}
+    keywords_with_synonyms = {k["keywordName"]: [s["synonymName"] for s in db.get_keyword_synonyms(k["keywordId"])] for k in db.get_all_keywords()}
+    
+    nlp_text = nlp(text.lower())
+    words_lemmatized = ' '.join([token.lemma_ for token in nlp_text if not token.is_punct and not token.is_stop])
+    
+    for key, value in keywords_with_synonyms.items():
+        
+        if re.search(rf"\b{key}\b", words_lemmatized) or search_in_similar(value, words_lemmatized) or \
+            re.search(rf"\b{key}\b", text.lower()) or search_in_similar(value, text.lower()):
+        
+                found_keywords.add(key)
+    
+    return found_keywords
+
 
 # wrapper/decorator per impedire di accedere a url dell'app senza prima essersi loggati
 def login_required(f):
@@ -509,21 +532,7 @@ def document_analysis():
                     "document_emotion": entire_emotion, "document_emotion_hide": emotion_hide})
         
     # ricerca parole chiave
-    found_keywords = set()
-    
-    # dizionario con {"nome parola chiave 1": ["sinonimo1", "sinonimo2"], "nome parola chiave 2": [], ...}
-    keywords_with_synonyms = {k["keywordName"]: [s["synonymName"] for s in db.get_keyword_synonyms(k["keywordId"])] for k in db.get_all_keywords()}
-    
-    nlp_text = nlp(text.lower())
-    words_lemmatized = ' '.join([token.lemma_ for token in nlp_text if not token.is_punct and not token.is_stop])
-    
-    for key, value in keywords_with_synonyms.items():
-        
-        if re.search(rf"\b{key}\b", words_lemmatized) or search_in_similar(value, words_lemmatized) or \
-            re.search(rf"\b{key}\b", text.lower()) or search_in_similar(value, text.lower()):
-        
-                found_keywords.add(key)
-    
+    found_keywords = search_keywords(text)
     session["keywords"] = list(found_keywords)
     
     # split in paragrafi
