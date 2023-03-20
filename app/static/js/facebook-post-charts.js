@@ -15,7 +15,7 @@ $(document).ready(function() {
     // BARPLOT REAZIONI
     const reactionsBarData = JSON5.parse($("#fb_post_reaction_barchart").attr("data"));
     const reactionsBarMargin = {top: 25, right: 15, bottom: 30, left: 15};
-    const reactionsBarColor = d3.scaleOrdinal(d3.schemeCategory10);
+    //const reactionsBarColor = d3.scaleOrdinal(d3.schemeCategory10);
     const reactionsBarSvg = d3.select("#fb_post_reaction_barchart").append("svg").attr("id", "fb_post_barplot_svg").append("g").attr("id", "fb_post_barplot_g");
     
     if (d3.sum(reactionsBarData.map(d => d.n)) != 0) {
@@ -55,7 +55,7 @@ $(document).ready(function() {
 
         reactionsBarSvg.selectAll("mybar").data(reactionsBarData).enter().append("rect")
         .attr("x", d => barX(d.reaction)).attr("y", d => barY(d.n))
-        .attr("width", barX.bandwidth()).attr("height", d => barHeight - barY(d.n)).attr("fill", d => reactionsBarColor(d.reaction));
+        .attr("width", barX.bandwidth()).attr("height", d => barHeight - barY(d.n));//.attr("fill", d => reactionsBarColor(d.reaction));
 
     }
 
